@@ -1,0 +1,8 @@
+
+* Aho A., Lam, Sethi R., Ullman J., Compiladores: Principios, Técnicas y Herramientas. Addisson-Wesley, (2da edicion) 2009
+* Tremblay J.P., Sorenson P.G., The theory and practice of Compiler Writing. McGraw-Hill, 1985
+* Waite W.M., Goos G., Compiler Construction. Springer-Verlag, 1985
+* Waite, William M., Lief H. Carter, and Lynn R. Carter. An Introduction to Compiler Construction. Addison-Wesley Longman Publishing Co., Inc., 1997.
+* Mak, R. Writing Compilers and Interpreters: A Software Engineering Approach, Wiley Publishing Inc. 2009
+* Appel, A.W., Modern Compiler Implementation in Java, Cambridge Univ. Press, 2002
+* Galvez, S., Compiladores. Traductores y compiladores con Lex/Yacc, JFlex/Cup y JavaCC. Universidad de Malaga 2005.
