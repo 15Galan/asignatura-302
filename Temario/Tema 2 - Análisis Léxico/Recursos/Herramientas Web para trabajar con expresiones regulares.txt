@@ -1,0 +1,15 @@
+Las expresiones relulares se utilizan comúnmente en muchos leguajes de programación.
+No son exactamente iguales en todos los lenguajes, pero hay un núcleo comun bastante generalizado basado en las expresiones originales de LEX.
+A continuación aparecen diferentes herramientas web que pueden ser útiles para practicar con Expresiones Regulares (ER):
+
+http://www.regexr.com -- Herramienta para sdiseñar y probar diversas expresiones regulares en Javascript
+http://www.regextester.com/ -- Similar al anterior.
+http://regexcrossword.com -- juegos de crucigramas con ER
+http://rubular.com -- Ruby regular expression editor
+
+
+NOTA:
+
+Gracias a los alumnos que han aportado algunos de los enlaces.
+
+Si encontráis alguna más, no dudéis en compartirla para que la añadamos a la lista.
