@@ -55,11 +55,6 @@ public class Linea {
         }
     }
 
-    // TODO
-    public void leerFichero(String entrada) {
-        System.err.println("No implementado");
-    }
-
     /**
      * Lee una línea e inserta lo leído en un árbol de operaciones.
      */
