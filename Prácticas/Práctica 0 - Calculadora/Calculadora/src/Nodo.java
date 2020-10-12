@@ -91,31 +91,6 @@ public class Nodo {
      * @param numero    Número a insertar
      */
     private void insertarNumero(String numero) {
-//        if (expresion == Expresion.OPERADOR) {
-//            if (izq == null) {
-//                izq = new Nodo(numero);
-//
-//            } else if (der == null) {
-//                der = new Nodo(numero);
-//
-//            } else if (der.expresion == Expresion.OPERADOR) {
-//                der.insertarNumero(numero);
-//
-//            } else {
-//                System.err.println("¿Cómo hemos llegado aquí? : " + numero + " :-> " + this);
-//            }
-//
-//        } else if (expresion == Expresion.NUMERO) {
-//            System.err.println("¿Cómo hemos llegado aquí? : " + numero + " :-> " + this);
-//
-//        } else {
-//            contenido = numero;
-//            expresion = Expresion.NUMERO;
-//
-//            izq = new Nodo();
-//            der = new Nodo();
-//        }
-
         if (expresion == null) {        // Árbol vacío
             contenido = numero;
             expresion = Expresion.NUMERO;
@@ -145,31 +120,6 @@ public class Nodo {
      * @param operador  Operador a insertar
      */
     private void insertarOperador(String operador) {
-//        if (expresion == Expresion.NUMERO) {
-//            if (izq == null) {
-//                izq = new Nodo(operador);
-//
-//            } else if (der == null) {
-//                der = new Nodo(operador);
-//
-//            } else if (der.expresion == Expresion.NUMERO) {
-//                der.insertarNumero(operador);
-//
-//            } else {
-//                System.err.println("¿Cómo hemos llegado aquí? : " + operador + " :-> " + this);
-//            }
-//
-//        } else if (expresion == Expresion.OPERADOR) {
-//            System.err.println("¿Cómo hemos llegado aquí? : " + operador + " :-> " + this);
-//
-//        } else {
-//            contenido = operador;
-//            expresion = Expresion.OPERADOR;
-//
-//            izq = new Nodo();
-//            der = new Nodo();
-//        }
-
         if (expresion == null) {        // Árbol vacío
             contenido = operador;
             expresion = Expresion.OPERADOR;
@@ -201,6 +151,7 @@ public class Nodo {
      */
     public void operar() throws OperationsException {
 //        System.out.println(this);
+        // TODO - Operar con una copia para mantener el árbol original
 
         if (!esHoja() && expresion == Expresion.NUMERO && (izq.expresion == Expresion.NUMERO || der.expresion == Expresion.NUMERO)) {
             throw new OperationsException("Error al operar " + this + ": no hay operando");

@@ -17,30 +17,51 @@ import java.util.List;
 
 public class Calculadora {
 
-    private static String salida;
     private static List<Linea> lineas;
 
     public static void main(String[] args) {
         lineas = new LinkedList<>();
 
         if (args.length == 0) {
-            Linea linea = new Linea();
-            linea.leerTeclado();
-
-            lineas.add(linea);
+            leerTeclado();
 
         } else {
-            if (args.length == 2) {
-                salida = args[1];
-            }
-
             leerFichero(args[0]);
         }
 
         calcular();
+
+        if (args.length == 2) {
+            escribirFichero(args[1]);
+
+        } else {
+            for (Linea linea : lineas) {
+                System.out.println(linea.getArbol().getContenido());
+            }
+        }
     }
 
 
+    /**
+     * Lee una línea por teclado y la asigna a la lista de líneas (que solo tendrá esa).
+     */
+    public static void leerTeclado() {
+        try(Scanner sc = new Scanner(System.in)) {
+            System.out.println("No se detectó un archivo de entrada de datos.");
+            System.out.print("Escribe la operación: ");
+
+            lineas.add(new Linea(sc.nextLine()));
+
+        } catch (Exception e) {
+            System.err.println("Error al leer la linea");
+        }
+    }
+
+    /**
+     * Almacena cada línea del fichero en una lista.
+     *
+     * @param fichero   Archivo del que lee
+     */
     private static void leerFichero(String fichero) {
         try (Scanner sc = new Scanner(new File(fichero))) {
             while (sc.hasNext()) {
@@ -52,30 +73,33 @@ public class Calculadora {
         }
     }
 
-    private static void calcular() {
-        String resultado, arbol = null;
+    /**
+     * Almacena el resultado de cada operación (línea) en un fichero
+     *
+     * @param fichero   Archivo en el que escribe
+     */
+    public static void escribirFichero(String fichero) {
+        try (PrintWriter pw = new PrintWriter(new File(fichero))) {
+            for (Linea linea : lineas) {
+                pw.println(linea.getArbol().getContenido());
+            }
 
-        try (PrintWriter pw = new PrintWriter(new File(salida))) {
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Resuelve todas las operaciones descritas como líneas de la Calculadora.
+     */
+    private static void calcular() {
+        try {
             for (Linea linea : lineas) {
                 linea.arbolizar();
-                arbol = linea.getArbol().toString();
-
                 linea.getArbol().operar();
-                resultado = linea.getArbol().getContenido();
-
-                if (salida != null) {
-                    pw.println(resultado);
-
-                } else {
-                    System.out.println(resultado);
-                }
             }
 
         } catch (IllegalArgumentException | OperationsException e) {
-            System.err.println(e.getMessage());
-            System.out.println(arbol);
-
-        } catch (FileNotFoundException e) {
             System.err.println(e.getMessage());
         }
     }

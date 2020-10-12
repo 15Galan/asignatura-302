@@ -1,5 +1,3 @@
-import java.util.Scanner;
-
 public class Linea {
 
     private final char[] digitos = {'0','1','2','3','4','5','6','7','8','9'};
@@ -40,21 +38,6 @@ public class Linea {
 
 
     // Linea
-    /**
-     * Lee una línea por teclado y la asigna.
-     */
-    public void leerTeclado() {
-        try(Scanner sc = new Scanner(System.in)) {
-            System.out.println("No se detectó un archivo de entrada de datos.");
-            System.out.print("Escribe la operación: ");
-
-            linea = sc.nextLine();
-
-        } catch (Exception e) {
-            System.err.println("Error al leer la linea");
-        }
-    }
-
     /**
      * Lee una línea e inserta lo leído en un árbol de operaciones.
      */
