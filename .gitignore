@@ -1,4 +1,4 @@
 *.mkv
-/.idea/*
-/out/*
-*.iml
+**/.idea/*
+!.idea/workspace.xml
+**/out/*
