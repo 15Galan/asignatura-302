@@ -42,7 +42,7 @@ public class Linea {
      * Lee una línea e inserta lo leído en un árbol de operaciones.
      */
     public void arbolizar() {
-        int n = 0;
+        int n = -1;     // Debe apuntar al primer digito de un numero
 
         for (int i = 0; i < linea.length(); i++) {
             char c = linea.charAt(i);
@@ -51,17 +51,20 @@ public class Linea {
                 arbol.insertar(String.valueOf(c), Expresion.OPERADOR);
                 arbol.insertar(numero(n), Expresion.NUMERO);
 
-                n = i+1;
+                n = -1;     // Reinicio de la variable
+
+            } else if (detectar(c) == Expresion.NUMERO && n == -1) {
+                n = i;      // Primer digito
             }
 
-            if (i == linea.length()-1) {
+            if (detectar(c) == Expresion.NUMERO && i == linea.length() - 1) {
                 arbol.insertar(numero(n), Expresion.NUMERO);
             }
         }
     }
 
     /**
-     * Devuelve el número completo al que pertenece el dígito indicado
+     * Devuelve el número completo al que pertenece el dígito
      * en la posición indicada de la línea.
      *
      * @param posicion  Posicion de la línea con el primer digito
@@ -69,58 +72,65 @@ public class Linea {
      * @return          Número al que pertenece el dígito
      */
     public String numero(int posicion) {
-        StringBuilder num = new StringBuilder();    // Cadena de digitos (un numero)
+        StringBuilder numero = new StringBuilder();    // Cadena de digitos (un numero)
+        char digito = linea.charAt(posicion);
 
-        while (detectar(linea.charAt(posicion)) == Expresion.NUMERO && posicion < linea.length()-1) {
-            num.append(linea.charAt(posicion));
+        while (detectar(digito) == Expresion.NUMERO && posicion < linea.length()-1) {
+            numero.append(digito);
+
             posicion++;
+            digito = linea.charAt(posicion);
         }
 
         // Caso para el último dígito de toda la línea
         if (posicion == linea.length()-1) {
-            num.append(linea.charAt(posicion));     // Último dígito
+            numero.append(digito);     // Último dígito
         }
 
-//        System.out.println("Número " + num + " detectado para el caracter " + digito);
-
-        return num.toString();
+        return numero.toString();
     }
 
     /**
      * Comprueba si un carácter es un número o un operador.
      *
      * @param c     Carácter
-     * @return      NUMERO si es un numero, OPERADOR si es un operador
+     * @return      NUMERO si es un numero, OPERADOR si es un operador, NULL si es un espacio
      */
     private Expresion detectar(char c) {
-        boolean encontrado = false;
         Expresion res = null;
-        int i = 0;
 
-        while (!encontrado && i < operadores.length) {
-            encontrado = operadores[i] == c;
-            i++;
+        if (!Character.isWhitespace(c)) {
+            boolean encontrado = false;
+            int i = 0;
 
-            if (encontrado) {
-                res = Expresion.OPERADOR;
-            }
-        }
-
-        if (!encontrado) {
-            i = 0;
-
-            while (!encontrado && i < digitos.length) {
-                encontrado = digitos[i] == c;
+            // Buscar entre los operadores
+            while (!encontrado && i < operadores.length) {
+                encontrado = operadores[i] == c;
                 i++;
             }
 
             if (encontrado) {
-                res = Expresion.NUMERO;
+                res = Expresion.OPERADOR;
             }
-        }
 
-        if (!encontrado) {
-            throw new IllegalArgumentException("Carácter incorrecto: \"" + c +"\"");
+            // Buscar entre los digitos
+            if (!encontrado) {
+                i = 0;
+
+                while (!encontrado && i < digitos.length) {
+                    encontrado = digitos[i] == c;
+                    i++;
+                }
+
+                if (encontrado) {
+                    res = Expresion.NUMERO;
+                }
+            }
+
+            // No es ni un operador, ni un digito, ni un espacio
+            if (!encontrado) {
+                throw new IllegalArgumentException("Carácter incorrecto: \"" + c + "\"");
+            }
         }
 
         return res;

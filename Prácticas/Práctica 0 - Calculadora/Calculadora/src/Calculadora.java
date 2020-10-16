@@ -29,15 +29,20 @@ public class Calculadora {
             leerFichero(args[0]);
         }
 
-        calcular();
+        try {
+            calcular();
 
-        if (args.length == 2) {
-            escribirFichero(args[1]);
+            if (args.length == 2) {
+                escribirFichero(args[1]);
 
-        } else {
-            for (Linea linea : lineas) {
-                System.out.println(linea.getArbol().getContenido());
+            } else {
+                for (Linea linea : lineas) {
+                    System.out.println(linea.getArbol().getContenido());
+                }
             }
+
+        } catch (IllegalArgumentException | OperationsException e) {
+            System.err.println(e.getMessage());
         }
     }
 
@@ -92,15 +97,10 @@ public class Calculadora {
     /**
      * Resuelve todas las operaciones descritas como líneas de la Calculadora.
      */
-    private static void calcular() {
-        try {
-            for (Linea linea : lineas) {
-                linea.arbolizar();
-                linea.getArbol().operar();
-            }
-
-        } catch (IllegalArgumentException | OperationsException e) {
-            System.err.println(e.getMessage());
+    private static void calcular() throws IllegalArgumentException, OperationsException {
+        for (Linea linea : lineas) {
+            linea.arbolizar();
+            linea.getArbol().operar();
         }
     }
 }

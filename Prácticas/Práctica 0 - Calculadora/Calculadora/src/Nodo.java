@@ -2,6 +2,8 @@ import javax.management.OperationsException;
 
 public class Nodo {
 
+    public int resultado;
+
     private String contenido;       // Representa un valor numérico o un operador
     private Expresion expresion;    // Indica si un nodo es un número, un operador o está vacío
 

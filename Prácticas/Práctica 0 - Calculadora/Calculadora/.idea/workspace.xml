@@ -20,7 +20,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f69306e0-89a0-463f-aea7-5655dc2c4fb4" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/../../../.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/../../../.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Calculadora.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Calculadora.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Linea.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Linea.java" afterDir="false" />
@@ -46,12 +45,13 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../../../../Proyecto" />
   </component>
   <component name="RunManager" selected="Application.Test : entrada + salida">
     <configuration name="Test : entrada + salida" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="Calculadora" />
       <module name="Calculadora" />
-      <option name="PROGRAM_PARAMETERS" value="exp1.in exp.out" />
+      <option name="PROGRAM_PARAMETERS" value="exp2.in exp.out" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -100,7 +100,13 @@
       <workItem from="1602415549600" duration="110000" />
       <workItem from="1602415672211" duration="3259000" />
       <workItem from="1602422219692" duration="2538000" />
-      <workItem from="1602504149998" duration="4705000" />
+      <workItem from="1602504149998" duration="4901000" />
+      <workItem from="1602621009737" duration="1805000" />
+      <workItem from="1602753469524" duration="610000" />
+      <workItem from="1602771769816" duration="91000" />
+      <workItem from="1602795026694" duration="4575000" />
+      <workItem from="1602838780823" duration="19000" />
+      <workItem from="1602843810902" duration="5695000" />
     </task>
     <servers />
   </component>
@@ -120,10 +126,10 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="828" y="178" width="1092" height="715" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1602515210040">
+    <state x="828" y="178" width="1092" height="715" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1602849600090">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="828" y="178" width="1092" height="715" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1602515210040" />
+    <state x="828" y="178" width="1092" height="715" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1602849600090" />
     <state x="1209" y="325" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1602417650998">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -140,22 +146,30 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="1053" y="100" width="774" height="840" key="DiffContextDialog/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1602415659093" />
-    <state width="914" height="280" key="GridCell.Tab.0.bottom" timestamp="1602515353293">
+    <state x="2180" y="278" key="FileChooserDialogImpl" timestamp="1602754846241">
+      <screen x="1920" y="0" width="1920" height="1040" />
+    </state>
+    <state x="2180" y="278" key="FileChooserDialogImpl/0.0.1920.1040/1920.0.1920.1040@1920.0.1920.1040" timestamp="1602754846241" />
+    <state width="914" height="345" key="GridCell.Tab.0.bottom" timestamp="1602849488913">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="914" height="280" key="GridCell.Tab.0.bottom/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1602515353293" />
-    <state width="914" height="280" key="GridCell.Tab.0.center" timestamp="1602515353293">
+    <state width="914" height="345" key="GridCell.Tab.0.bottom/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1602849488913" />
+    <state width="1877" height="346" key="GridCell.Tab.0.bottom/0.0.1920.1040/1920.0.1920.1040@1920.0.1920.1040" timestamp="1602801445602" />
+    <state width="914" height="345" key="GridCell.Tab.0.center" timestamp="1602849488913">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="914" height="280" key="GridCell.Tab.0.center/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1602515353293" />
-    <state width="914" height="280" key="GridCell.Tab.0.left" timestamp="1602515353293">
+    <state width="914" height="345" key="GridCell.Tab.0.center/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1602849488913" />
+    <state width="1877" height="346" key="GridCell.Tab.0.center/0.0.1920.1040/1920.0.1920.1040@1920.0.1920.1040" timestamp="1602801445601" />
+    <state width="914" height="345" key="GridCell.Tab.0.left" timestamp="1602849488913">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="914" height="280" key="GridCell.Tab.0.left/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1602515353293" />
-    <state width="914" height="280" key="GridCell.Tab.0.right" timestamp="1602515353293">
+    <state width="914" height="345" key="GridCell.Tab.0.left/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1602849488913" />
+    <state width="1877" height="346" key="GridCell.Tab.0.left/0.0.1920.1040/1920.0.1920.1040@1920.0.1920.1040" timestamp="1602801445601" />
+    <state width="914" height="345" key="GridCell.Tab.0.right" timestamp="1602849488913">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="914" height="280" key="GridCell.Tab.0.right/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1602515353293" />
+    <state width="914" height="345" key="GridCell.Tab.0.right/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1602849488913" />
+    <state width="1877" height="346" key="GridCell.Tab.0.right/0.0.1920.1040/1920.0.1920.1040@1920.0.1920.1040" timestamp="1602801445601" />
     <state x="1084" y="222" key="RollbackChangesDialog" timestamp="1602505234373">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -176,7 +190,32 @@
           <properties class="java.lang.NullPointerException" package="java.lang" />
           <option name="timeStamp" value="2" />
         </breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/Nodo.java</url>
+          <line>166</line>
+          <option name="timeStamp" value="9" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/Linea.java</url>
+          <line>77</line>
+          <option name="timeStamp" value="14" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/Linea.java</url>
+          <line>85</line>
+          <option name="timeStamp" value="15" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/Linea.java</url>
+          <line>56</line>
+          <option name="timeStamp" value="16" />
+        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
+    <watches-manager>
+      <configuration name="Application">
+        <watch expression="linea.charAt(posicion)" language="JAVA" />
+      </configuration>
+    </watches-manager>
   </component>
 </project>
