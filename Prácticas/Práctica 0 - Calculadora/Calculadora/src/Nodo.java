@@ -2,8 +2,6 @@ import javax.management.OperationsException;
 
 public class Nodo {
 
-    public int resultado;
-
     private String contenido;       // Representa un valor numérico o un operador
     private Expresion expresion;    // Indica si un nodo es un número, un operador o está vacío
 
@@ -68,23 +66,19 @@ public class Nodo {
 
     // Arbol
     /**
-     * Inserta ordenadmente el valor recibido en el árbol, diferenciando
-     * si se trata de un número o de un operdor.
+     * Inserta ordenadmente el valor recibido en el árbol,
+     * diferenciando si se trata de un número o de un operdor.
      *
      * @param valor     Número u operador a insertar.
      * @param tipo      Diferenciador
      */
     public void insertar(String valor, Expresion tipo) {
-//        System.out.print("\"" + valor + "\" :-> " + this);
-
         if (tipo == Expresion.NUMERO) {
             insertarNumero(valor);
 
         } else {
             insertarOperador(valor);
         }
-
-//        System.out.println(" -> " + this);
     }
 
     /**
@@ -110,9 +104,6 @@ public class Nodo {
             } else if (der.expresion == Expresion.OPERADOR) {
                 der.insertarNumero(numero);
             }
-
-        } else {
-            System.err.println("¿Cómo hemos llegado aquí? : " + numero + " :-> " + this);
         }
     }
 
@@ -139,11 +130,21 @@ public class Nodo {
             } else if (der.expresion == Expresion.OPERADOR) {
                 der.insertarOperador(operador);
             }
-
-        } else {
-            System.err.println("¿Cómo hemos llegado aquí? : " + operador + " :-> " + this);
         }
+    }
 
+    /**
+     * Opera todos los nodos de un árbol y le asigna un
+     * resultado a cada uno, según la operación que definen.
+     *
+     * @throws OperationsException
+     */
+    public String calcular() throws OperationsException {
+        Nodo copia = copiar(this);
+
+        copia.operar();
+
+        return copia.contenido;
     }
 
     /**
@@ -151,15 +152,11 @@ public class Nodo {
      * resultado de aplicar la operación descrita a sus hijos.
      * Si el nodo contiene un número, no hace nada.
      */
-    public void operar() throws OperationsException {
-//        System.out.println(this);
-        // TODO - Operar con una copia para mantener el árbol original
+    private String operar() throws OperationsException {
+        int res = 0;
 
-        if (!esHoja() && expresion == Expresion.NUMERO && (izq.expresion == Expresion.NUMERO || der.expresion == Expresion.NUMERO)) {
-            throw new OperationsException("Error al operar " + this + ": no hay operando");
-
-        } else if(expresion == Expresion.OPERADOR && !esHoja()) {
-            int nIzq, nDer, res;
+        if (!esHoja() && expresion == Expresion.OPERADOR) {
+            int nIzq, nDer;
 
             izq.operar();
             nIzq = Integer.parseInt(izq.contenido);
@@ -178,6 +175,26 @@ public class Nodo {
             contenido = String.valueOf(res);
             izq = null;
             der = null;
+
+        } else if (!esHoja() && expresion == Expresion.NUMERO && (izq.expresion == Expresion.NUMERO || der.expresion == Expresion.NUMERO)) {
+            throw new OperationsException("Error al operar " + this + ": no hay operando");
+        }
+
+        return String.valueOf(res);
+    }
+
+    /**
+     * Copia un árbol.
+     *
+     * @param original  Árbol que se quiere copiar.
+     * @return          Copia del árbol.
+     */
+    public Nodo copiar(Nodo original) {
+        if (original.esHoja()) {
+            return new Nodo(original.contenido);
+
+        } else {
+            return new Nodo(original.contenido, copiar(original.izq), copiar(original.der));
         }
     }
 
@@ -196,9 +213,7 @@ public class Nodo {
         StringBuilder mensaje = new StringBuilder();
 
         if (expresion == null) {
-            mensaje.append("|");
-            mensaje.append(contenido);
-            mensaje.append("|");
+            mensaje.append("| |");
 
         } else if (esHoja()) {
             mensaje.append("(");

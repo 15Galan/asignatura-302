@@ -1,3 +1,5 @@
+import javax.management.OperationsException;
+
 public class Linea {
 
     private final char[] digitos = {'0','1','2','3','4','5','6','7','8','9'};
@@ -5,6 +7,8 @@ public class Linea {
 
     private String linea;
     private Nodo arbol;
+
+    public String resultado;    // Si la cadena es vacía, valdrá ""
 
 
     public Linea(String texto) {
@@ -134,6 +138,15 @@ public class Linea {
         }
 
         return res;
+    }
+
+    /**
+     * Ejecuta las operaciones del árbol.
+     *
+     * @throws OperationsException
+     */
+    public void calcular() throws OperationsException {
+        resultado = arbol.calcular();
     }
 
 

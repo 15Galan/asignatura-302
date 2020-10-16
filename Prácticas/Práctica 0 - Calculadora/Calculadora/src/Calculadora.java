@@ -37,7 +37,7 @@ public class Calculadora {
 
             } else {
                 for (Linea linea : lineas) {
-                    System.out.println(linea.getArbol().getContenido());
+                    System.out.println(linea.resultado);
                 }
             }
 
@@ -86,7 +86,7 @@ public class Calculadora {
     public static void escribirFichero(String fichero) {
         try (PrintWriter pw = new PrintWriter(new File(fichero))) {
             for (Linea linea : lineas) {
-                pw.println(linea.getArbol().getContenido());
+                pw.println(linea.resultado);
             }
 
         } catch (FileNotFoundException e) {
@@ -100,7 +100,7 @@ public class Calculadora {
     private static void calcular() throws IllegalArgumentException, OperationsException {
         for (Linea linea : lineas) {
             linea.arbolizar();
-            linea.getArbol().operar();
+            linea.calcular();
         }
     }
 }

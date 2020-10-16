@@ -47,11 +47,19 @@
     <property name="aspect.path.notification.shown" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../../../../../Proyecto" />
   </component>
-  <component name="RunManager" selected="Application.Test : entrada + salida">
+  <component name="RunManager" selected="Application.Test : entrada + salida (G)">
+    <configuration name="Test : entrada + salida (G)" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="Calculadora" />
+      <module name="Calculadora" />
+      <option name="PROGRAM_PARAMETERS" value="expG.in expG.out" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="Test : entrada + salida" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="Calculadora" />
       <module name="Calculadora" />
-      <option name="PROGRAM_PARAMETERS" value="exp2.in exp.out" />
+      <option name="PROGRAM_PARAMETERS" value="exp3.in exp.out" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -86,6 +94,7 @@
       <item itemvalue="Application.Test : teclado" />
       <item itemvalue="Application.Test : entrada" />
       <item itemvalue="Application.Test : entrada + salida" />
+      <item itemvalue="Application.Test : entrada + salida (G)" />
     </list>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
@@ -106,7 +115,7 @@
       <workItem from="1602771769816" duration="91000" />
       <workItem from="1602795026694" duration="4575000" />
       <workItem from="1602838780823" duration="19000" />
-      <workItem from="1602843810902" duration="5695000" />
+      <workItem from="1602843810902" duration="16535000" />
     </task>
     <servers />
   </component>
@@ -126,10 +135,10 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="828" y="178" width="1092" height="715" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1602849600090">
+    <state x="828" y="178" width="1092" height="715" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1602862629495">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="828" y="178" width="1092" height="715" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1602849600090" />
+    <state x="828" y="178" width="1092" height="715" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1602862629495" />
     <state x="1209" y="325" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1602417650998">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -150,30 +159,30 @@
       <screen x="1920" y="0" width="1920" height="1040" />
     </state>
     <state x="2180" y="278" key="FileChooserDialogImpl/0.0.1920.1040/1920.0.1920.1040@1920.0.1920.1040" timestamp="1602754846241" />
-    <state width="914" height="345" key="GridCell.Tab.0.bottom" timestamp="1602849488913">
+    <state width="914" height="220" key="GridCell.Tab.0.bottom" timestamp="1602871714716">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="914" height="345" key="GridCell.Tab.0.bottom/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1602849488913" />
+    <state width="914" height="220" key="GridCell.Tab.0.bottom/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1602871714716" />
     <state width="1877" height="346" key="GridCell.Tab.0.bottom/0.0.1920.1040/1920.0.1920.1040@1920.0.1920.1040" timestamp="1602801445602" />
-    <state width="914" height="345" key="GridCell.Tab.0.center" timestamp="1602849488913">
+    <state width="914" height="220" key="GridCell.Tab.0.center" timestamp="1602871714716">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="914" height="345" key="GridCell.Tab.0.center/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1602849488913" />
+    <state width="914" height="220" key="GridCell.Tab.0.center/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1602871714716" />
     <state width="1877" height="346" key="GridCell.Tab.0.center/0.0.1920.1040/1920.0.1920.1040@1920.0.1920.1040" timestamp="1602801445601" />
-    <state width="914" height="345" key="GridCell.Tab.0.left" timestamp="1602849488913">
+    <state width="914" height="220" key="GridCell.Tab.0.left" timestamp="1602871714716">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="914" height="345" key="GridCell.Tab.0.left/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1602849488913" />
+    <state width="914" height="220" key="GridCell.Tab.0.left/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1602871714716" />
     <state width="1877" height="346" key="GridCell.Tab.0.left/0.0.1920.1040/1920.0.1920.1040@1920.0.1920.1040" timestamp="1602801445601" />
-    <state width="914" height="345" key="GridCell.Tab.0.right" timestamp="1602849488913">
+    <state width="914" height="220" key="GridCell.Tab.0.right" timestamp="1602871714716">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="914" height="345" key="GridCell.Tab.0.right/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1602849488913" />
+    <state width="914" height="220" key="GridCell.Tab.0.right/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1602871714716" />
     <state width="1877" height="346" key="GridCell.Tab.0.right/0.0.1920.1040/1920.0.1920.1040@1920.0.1920.1040" timestamp="1602801445601" />
-    <state x="1084" y="222" key="RollbackChangesDialog" timestamp="1602505234373">
+    <state x="1084" y="222" key="RollbackChangesDialog" timestamp="1602870718442">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="1084" y="222" key="RollbackChangesDialog/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1602505234373" />
+    <state x="1084" y="222" key="RollbackChangesDialog/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1602870718442" />
     <state width="487" height="523" key="XDebugger.FullValuePopup" timestamp="1602418078807">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -191,31 +200,11 @@
           <option name="timeStamp" value="2" />
         </breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/Nodo.java</url>
-          <line>166</line>
-          <option name="timeStamp" value="9" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/Linea.java</url>
-          <line>77</line>
-          <option name="timeStamp" value="14" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/Linea.java</url>
-          <line>85</line>
-          <option name="timeStamp" value="15" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/Linea.java</url>
-          <line>56</line>
-          <option name="timeStamp" value="16" />
+          <url>file://$PROJECT_DIR$/src/Calculadora.java</url>
+          <line>102</line>
+          <option name="timeStamp" value="28" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
-    <watches-manager>
-      <configuration name="Application">
-        <watch expression="linea.charAt(posicion)" language="JAVA" />
-      </configuration>
-    </watches-manager>
   </component>
 </project>
