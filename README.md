@@ -107,7 +107,7 @@ Basadas en la asignatura en específico.
 
 1. Muévete a tu rama o crea una rama temporal para evitar conflictos al fusionar los cambios con otra.
    * Una «rama temporal» no es más que una rama que creas para una modificación en concreto y luego la borras.
-   
+
 2. Realiza tus cambios del repositorio en esa rama y añádelos al *Staging Area* con `git add <archivos>`.
    * Puedes usar `git status` antes y después de `git add` para comprobar tus acciones.
 
@@ -157,7 +157,7 @@ Muestra el estado de los archivos del repositorio:
 * Los archivos que no han sido modificados no aparecen.
 
 Además, delante del nombre de cada archivo se indica si ha sido renombrado, modificado o eliminado.
-
+____
 
 ```
 git add <archivo>
@@ -166,8 +166,8 @@ Añade al *Staging Area* el archivo indicado, también pueden añadirse varios a
 
 * `git add -A` añade todos los archivos nuevos, modificados y eliminados.
 * `git add *` añade todos los archivos nuevos y modificados, excepto los que cuyo nombre empiecen por «.».
-* `git add -u` añade todos los archivos modificados y eliminados. 
-
+* `git add -u` añade todos los archivos modificados y eliminados.
+____
 
 ```
 git commit
@@ -177,7 +177,7 @@ Crea un commit para guardar las modificaciones almacenadas en el *Staging Area*.
 Los commits deben tener un título, pero además pueden tener un cuerpo; ambos se usan para diferenciar distintos commits y describir brevemente los cambios.
 
 * `git commit -m "<título>"` genera un commit con el título indicado, pero sin cuerpo.
-
+____
 
 
 ```
@@ -186,13 +186,13 @@ git push
 Publica en el Repositorio Remoto los commits realizados en el Repositorio Local y que no estén publicados.
 
 Tanto los commits como la última versión (último commit) del Repositorio Remoto serán visibles en GitHub.
-
+____
 
 ```
 git fetch
 ```
 Descarga en el Repositorio Local los archivos del Repositorio Remoto (no produce cambios locales, no como `git pull`).
-
+____
 
 ```
 git pull
@@ -204,7 +204,7 @@ Si hay modificaciones en el Repositorio Local se producirá un conflicto que pue
 Si se quiere hacer un `pull` de otra rama, basta con moverse a esa rama y ejecutar el comando en ella.
 
 ***Personalmente prefiero hacer un `git pull` a un `git fetch` debido a lo indicado en la metodología de trabajo.***
-
+____
 
 ```
 git clone <URL repositorio>
@@ -214,7 +214,7 @@ Descarga una copia local y sincronizada del Repositorio Remoto alojado en la URL
 Este comando se usa únicamente en el primer paso para descargar el repositorio con el que se quiere trabajar.
 
 `git pull` actualiza un Repositorio Local existente, `git clone` descarga un repositorio para usarlo localmente.
-
+____
 
 
 ### Intermedios
@@ -226,7 +226,7 @@ Salta a la rama local o remota con el nombre indicado.
 
 Si la rama es remota se actualizará localmente (como un `git pull`) y saltará a ella.
 * `git checkout -b <rama>` crea una rama y salta a ella.
-
+____
 
 ```
 git branch
@@ -234,15 +234,15 @@ git branch
 Muestra una lista de las ramas locales existentes.
 
 Si una rama no aparece, lo más probable es que no hayas descargado el contenido de la misma.
-* `git branch <nombre>` crea una rama local con el nombre indicado. 
+* `git branch <nombre>` crea una rama local con el nombre indicado.
 * `git branch -d <rama>` elimina la rama local indicada.
-
+____
 
 ```
 git merge <rama origen>
 ```
 Combina los cambios de la rama indicada con la rama en la que te encuentres.
-
+____
 
 ### Avanzados
 
@@ -251,7 +251,7 @@ git reset <archivo>
 ```
 Saca del *Staging Area* el archivo indicado, también pueden sacarse varios a la vez separándolos con espacios o indicando una ruta.
 * Funciona igual que `git add`, pero hace lo contrario.
-
+____
 
 ### Otros
 
@@ -260,15 +260,18 @@ git log
 ```
 Muestra el historial de commits en la consola. Se cierra como el editor de commits (`ESC` + `:wq`).
 * `git log --oneline` muestra únicamente los títulos de forma más compacta.
+____
 
 ```
 git config --global alias.lg "log --oneline --decorate --all --graph"
 git lg
 ```
 ALIAS - Muestra el historial de commits de forma compacta y con una estructura que representa el flujo de trabajo (ramas).
+____
 
 ```
 git config --global alias.s "status -s -b"
 git s
 ```
 ALIAS - Muestra el estado del repositorio, compacto y ordenado por ramas.
+____
