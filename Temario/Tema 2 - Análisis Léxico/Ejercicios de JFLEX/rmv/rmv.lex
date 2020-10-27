@@ -3,83 +3,75 @@
 
 %%
 
-SintaxisVariable	= [a-zA-Z_][0-9a-zA-Z_]*
+Variable	= [a-zA-Z_][a-zA-Z0-9_]*
+Comando		= [a-zA-Z][a-zA-Z0-9_]*
+Especial	= (\\).
 
 %{
-	String variable;
+	String variable, valor;
 %}
 
-%xstate TEXTO
+%int
+
 %xstate VARIABLE
-%xstate COMANDO
+%xstate TEXTO
+%xstate ARGUMENTOS
 
 %%
 
 <YYINITIAL> {
 	
-	/* Nombre de una variable */
-	{SintaxisVariable}/\=		{variable = yytext(); yybegin(TEXTO);}
+	/* Se reconoce un comando */
+	{Comando}" "	{System.out.print(yytext());
+					 yybegin(ARGUMENTOS);}
+
+	/* Se reconoce una variable */
+	{Variable}=		{variable = yytext().substring(0, yytext().length()-1);
+					 valor = "";
+					 yybegin(VARIABLE);}
 	
-	/* Comienzo de una variable */
-	\$							{yybegin(VARIABLE);}
 	
-	/* Comienzo de un texto */
+	/* Para todo lo demás */
+	[^] 			{ /* Ignorar */ }
+}
+
+
+<VARIABLE>	{
+	
+	/* Inicio de un texto (valor) */
 	\"							{yybegin(TEXTO);}
 	
-	/* Comienza un comando */
-	[a-zA-Z][0-9a-zA-Z_]*/\ 	{System.out.print("\n" + yytext()); yybegin(COMANDO);}
+	/* El valor es de otra variable */
+	\${Variable}				{valor += TablaSimbolos.get(yytext());}
 	
+	/* Se reconoce un texto */
+	{Especial} | [^\t\n\ ;|]	{valor += yytext();}
 	
-	/* Para todo lo demás */
-	[^] 						{ /* Ignorar */ }
+	/* Se reconoce un final de línea */
+	[\t\n;|] 					{TablaSimbolos.put(variable, valor);
+			 					 yybegin(YYINITIAL);}
 }
 
-<VARIABLE> {
-	
-	{SintaxisVariable} 		{variable = yytext();}
-	
-	\=						{yybegin(YYINITIAL);}
-	
-	/* Para todo lo demás */
-	[^] 					{ /* Ignorar */ }
-}
 
 <TEXTO> {
-	
-	/* Declaración de un valor */
-	(\= | \=\")/[^\r\n\\]+		{ /* Ignorar '=' */ }
-	
-	/* Caracteres de fin de línea */
-	\; | \"				{yybegin(YYINITIAL);}
 
-	/* Caracteres normales (final)*/
-	[^\r\n\"\;\\]+		{TablaSimbolos.put(variable, yytext());	yybegin(YYINITIAL);}
+	/* El valor es de otra variable */
+	\${Variable}			{valor += TablaSimbolos.get(yytext());}
 	
-	/* Caracteres especiales */
-	\\t					{System.out.println("T");}
-	\\r					{System.out.println("R");}
-	\\n 				{System.out.println("N");}
-	\\\"				{System.out.println("C");}
-	\\ 					{System.out.println("B");}
+	/* Se reconoce un texto */
+	{Especial} | [^\"]		{valor += yytext();}
 	
-	
-	/* Para todo lo demás */
-	[^] 				{ /* Ignorar */ }
+	/* Final de un texto (valor)*/
+	\"  					{TablaSimbolos.put(variable, valor);yybegin(YYINITIAL);}
 }
 
-<COMANDO> {
-	
-	/* Texto */
-	[^\r\n\"\;\$\\]+				{System.out.print(yytext());}
-	
-	/* Fin del comando */
-	\ 								{System.out.print(yytext());}
-	
-	/* Comienzo de los argumentos */
-	\${SintaxisVariable}			{System.out.print(TablaSimbolos.get(yytext()));}
-	
+
+<ARGUMENTOS> {
+
+	/* Se reconoce una variable */
+	\${Variable} 	{System.out.print(TablaSimbolos.get(yytext()));}
 	
 	/* Para todo lo demás */
-	[^] 							{ /* Ignorar */ }
+	[^]				{System.out.print(yytext());}
 }
 
