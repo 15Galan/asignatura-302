@@ -12,7 +12,7 @@ public class cpv {
             try {
                 Yylex lex = new Yylex(new FileReader(args[0]));
 		            
-	            while (lex.yylex() != null) {
+	            while (lex.yylex() != -1) {
 	                
 	            }
 
