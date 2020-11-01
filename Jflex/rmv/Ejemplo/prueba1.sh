@@ -1,0 +1,2 @@
+nombre=Ricardo
+echo $nombre
