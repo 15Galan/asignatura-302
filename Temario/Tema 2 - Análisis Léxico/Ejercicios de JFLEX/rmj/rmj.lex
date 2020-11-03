@@ -9,11 +9,12 @@ Igual		= " "*\=" "*
 Union		= " "*\+" "*
 Especial	= (\\).
 
-Salida		= System.out.print"ln"?"("
+Salida		= System.out.print"ln"?" "*"("
 
 
 %{
 	String variable = "", valor = "";
+	boolean salida = false;
 %}
 
 %int
@@ -56,10 +57,11 @@ Salida		= System.out.print"ln"?"("
 	{Igual}			{ }
 	
 	/* Declaración de variable */
-	String" "*		{yybegin(DECLARACION);}
+	String" "*		{ }
 	
 	/* Variable */
-	{Variable}		{yybegin(DECLARACION);}
+	{Variable}		{variable = yytext();
+					 yybegin(DECLARACION);}
 	
 	/* Mostrar por consola */
 	{Salida}		{System.out.print(yytext() + "\"");
@@ -78,28 +80,29 @@ Salida		= System.out.print"ln"?"("
 <DECLARACION> {
 	/* Poner otra variable */
 	/* Inicio de un texto (valor) */
-	\"				{yybegin(TEXTO);}
+	\"					{yybegin(TEXTO);}
 	
 	/* Nombre de la variable */
-	{Variable}		{variable = yytext();}
+	{Variable}			{valor += TablaSimbolos.get(yytext());}
 	
 	/* Asignación (= y espacios) */
-	{Igual}			{ }
+	{Igual}	| {Union}	{ }
 	
 	/* Final de la declaración */
-	[,;\n] 			{TablaSimbolos.put(variable, valor);
-			 		 yybegin(METODO);}
+	[,;\n] 				{TablaSimbolos.put(variable, valor);
+						 valor = "";
+			 			 yybegin(METODO);}
 	
 	
 	/* Para todo lo demás */
-	[^]				{System.out.print(yytext());}
+	[^]					{System.out.print(yytext());}
 }
 
 
 <TEXTO> {
 	
 	/* Texto */
-	[^\"]* | {Especial}		{valor += yytext();}
+	[^\\\"]* | {Especial}		{valor += yytext();}
 	
 	/* Asignación (= y espacios) */
 	{Union}					{ }
@@ -120,8 +123,10 @@ Salida		= System.out.print"ln"?"("
 	/* Se reconoce una variable */
 	{Variable} 				{System.out.print(TablaSimbolos.get(yytext()));}
 	
+	\\\"					{System.out.print(yytext()); yybegin(SUSTITUCION);}
+	
 	/* Texto */
-	[^;\"+)]* | {Especial}	{System.out.print(yytext());}
+	[^;\\\"+)]* | {Especial}	{System.out.print(yytext()); }
 		
 	/* Final de la salida */
 	\);						{System.out.print("\"" + yytext());
@@ -138,8 +143,12 @@ Salida		= System.out.print"ln"?"("
 	/* Final de un texto (valor)*/
 	\"  					{yybegin(SALIDA);}
 	
+	/* " escapada */
+	\\\"					{System.out.print(yytext());}
+	
 	/* Texto */
-	[^\"]* | {Especial}		{System.out.print(yytext());}
+	[^\\\"]* | {Especial}		{System.out.print(yytext());}
+	
 	
 	/* Para todo lo demás */
 	[^]						{System.out.print(yytext());}
