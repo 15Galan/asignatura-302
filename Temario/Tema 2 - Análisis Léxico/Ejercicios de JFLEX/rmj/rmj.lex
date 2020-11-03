@@ -6,10 +6,10 @@
 Variable	= [a-zA-Z_][a-zA-Z0-9_]*
 
 Igual		= " "*\=" "*
-Union		= \"" "*\+" "*\"
+Union		= " "*\+" "*
 Especial	= (\\).
 
-Salida		= System.out.println"("
+Salida		= System.out.print"ln"?"("
 
 
 %{
@@ -22,6 +22,7 @@ Salida		= System.out.println"("
 %xstate DECLARACION
 %xstate TEXTO
 %xstate	SALIDA
+%xstate SUSTITUCION
 
 %%
 
@@ -61,7 +62,7 @@ Salida		= System.out.println"("
 	{Variable}		{yybegin(DECLARACION);}
 	
 	/* Mostrar por consola */
-	{Salida}		{System.out.print(yytext());
+	{Salida}		{System.out.print(yytext() + "\"");
 					 yybegin(SALIDA);}
 	
 	/* Final del método */
@@ -75,7 +76,7 @@ Salida		= System.out.println"("
 
 
 <DECLARACION> {
-	
+	/* Poner otra variable */
 	/* Inicio de un texto (valor) */
 	\"				{yybegin(TEXTO);}
 	
@@ -85,8 +86,8 @@ Salida		= System.out.println"("
 	/* Asignación (= y espacios) */
 	{Igual}			{ }
 	
-	/* Final de línea */
-	[;\n] 			{TablaSimbolos.put(variable, valor);
+	/* Final de la declaración */
+	[,;\n] 			{TablaSimbolos.put(variable, valor);
 			 		 yybegin(METODO);}
 	
 	
@@ -96,21 +97,23 @@ Salida		= System.out.println"("
 
 
 <TEXTO> {
-
-	/* Unión de Strings */
-	{Union} 				{ }
 	
 	/* Texto */
 	[^\"]* | {Especial}		{valor += yytext();}
 	
+	/* Asignación (= y espacios) */
+	{Union}					{ }
+	
 	/* Final de un texto (valor)*/
-	\"  					{TablaSimbolos.put(variable, valor);
-							 yybegin(DECLARACION);}
+	\"  					{yybegin(DECLARACION);}
 }
 
 
 <SALIDA> {
 
+	/* Inicio de un texto */
+	\"						{yybegin(SUSTITUCION);}
+	
 	/* Unión de Strings */
 	{Union} 				{ }
 	
@@ -118,12 +121,25 @@ Salida		= System.out.println"("
 	{Variable} 				{System.out.print(TablaSimbolos.get(yytext()));}
 	
 	/* Texto */
-	[^\"]*\" | {Especial}	{System.out.print(yytext());}
-	
+	[^;\"+)]* | {Especial}	{System.out.print(yytext());}
+		
 	/* Final de la salida */
-	");"					{System.out.print(yytext());
+	\);						{System.out.print("\"" + yytext());
 							 yybegin(METODO);}
 	
+	
+	/* Para todo lo demás */
+	[^]						{System.out.print(yytext());}
+}
+
+
+<SUSTITUCION> {
+
+	/* Final de un texto (valor)*/
+	\"  					{yybegin(SALIDA);}
+	
+	/* Texto */
+	[^\"]* | {Especial}		{System.out.print(yytext());}
 	
 	/* Para todo lo demás */
 	[^]						{System.out.print(yytext());}
