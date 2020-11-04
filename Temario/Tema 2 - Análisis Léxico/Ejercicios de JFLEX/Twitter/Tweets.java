@@ -3,7 +3,7 @@ import java.io.IOException;
 
 public class Tweets {
 	
-	static int longitud, hashtags, citas, enlaces, repeticiones;
+	static int longitud, hashtags, citas, enlaces;
 	
 	public static void main(String arg[]) {
 		
@@ -28,7 +28,7 @@ public class Tweets {
 	            	System.err.println("Enlaces: " + enlaces);
 	            	
 	            } else if (arg[0].equals("-hn")) {
-	            	System.out.println("Hashtags: " + hashtags + "\tRepeticiones: " + repeticiones);
+	            	TablaHashtags.dump();
 	            
 	            } else {
 	            	System.err.println("Opción no reconocida");
