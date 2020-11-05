@@ -6,52 +6,54 @@ import java.util.LinkedList;
 
 %int
 
-Numero	= [0-9]+
+Numero		= [0-9]+
+Operador	= [\+\-\*\/]
 
 %{
 	List<Integer> lista = new LinkedList<>();
-	int ida, idb, a, b;
+	String operador;
 	
-	public void operar(List lista, String op) {
-		int res = 0;
-
-		a = (int) lista.get(lista.size()-2);
-		b = (int) lista.get(lista.size()-1);
+	public void operar(List pila, String op) {
+		int ida, idb, a, b, res = 0;
 		
-		ida = lista.size()-2;
-		idb = lista.size()-1;
+		a = (int) pila.get(pila.size()-2);
+		b = (int) pila.get(pila.size()-1);
 		
+		ida = pila.size()-2;
+		idb = pila.size()-1;
+				
 		switch (op) {
-            case "+":
-            	res = a + b;
-                break;
-                
-            case "-":
-            	res = a - b;
-                break;
-                
-            case "*":
-            	res = a * b;
-                break;
-                
-            case "/":
-            	res = a / b;
-                break;
-                
-            default:
-            	
-                break;
-        }
+	        case "+":
+	        	res = a + b;
+	            break;
+	            
+	        case "-":
+	        	res = a - b;
+	            break;
+	            
+	        case "*":
+	        	res = a * b;
+	            break;
+	            
+	        case "/":
+	        	res = a / b;
+	            break;
+	            
+	        default:
+	        	System.err.println("Error: operaddor = " + op);
+	            break;
+	    }
 		
-		lista.set(ida, res);
-		lista.remove(idb);
+		// System.out.print(pila + " " + operador);
+		
+		pila.set(ida, res);
+		pila.remove(idb);
+		
+		// System.out.println(" -> " + pila);
 	}
 %}
 
-%xstate SUMA
-%xstate RESTA
-%xstate MULTIPLICACION
-%xstate DIVISION
+%xstate OPERACION
 %xstate PARENTESIS
 
 %%
@@ -62,19 +64,20 @@ Numero	= [0-9]+
 	{Numero}					{lista.add(Integer.parseInt(yytext()));}
 	
 	/* Reconoce un operador */
-	"+"							{yybegin(SUMA);}
-	"-"							{yybegin(RESTA);}
-	"*"							{yybegin(MULTIPLICACION);}
-	"/"							{yybegin(DIVISION);}
+	{Operador}					{operador = yytext();
+								 yybegin(OPERACION);}
 	
 	/* Reconoce un paréntesis inicial */
 	"("							{yybegin(PARENTESIS);}
 	
 	/* Reconoce un paréntesis final */
-	")"							{operar(lista, "*");
-								 yybegin(YYINITIAL);}
-	/* Final de la operación */
-	";"							{System.out.println(lista.get((int) lista.size()-1));}
+	")"							{if (lista.size() > 1) {
+									operar(lista, "*");
+								 };}
+								 
+	/* Reconoce el final de la línea */
+	";"							{System.out.println(lista.get(0));
+								 lista.clear();}
 	
 	
 	/* Cualquier otro lexema */
@@ -82,38 +85,11 @@ Numero	= [0-9]+
 }
 
 
-<SUMA> {
-	
-	/* Operar */
+<OPERACION> {
+
+	/* Reconoce un número */
 	{Numero}					{lista.add(Integer.parseInt(yytext()));
-								 operar(lista, "+");
-								 yybegin(YYINITIAL);}
-}
-
-
-<RESTA> {
-	
-	/* Operar */
-	{Numero}					{lista.add(Integer.parseInt(yytext()));
-								 operar(lista, "-");
-								 yybegin(YYINITIAL);}
-}
-
-
-<MULTIPLICACION> {
-	
-	/* Operar */
-	{Numero}					{lista.add(Integer.parseInt(yytext()));
-								 operar(lista, "*");
-								 yybegin(YYINITIAL);}
-}
-
-
-<DIVISION> {
-	
-	/* Operar */
-	{Numero}					{lista.add(Integer.parseInt(yytext()));
-								 operar(lista, "/");
+								 operar(lista, operador);
 								 yybegin(YYINITIAL);}
 }
 
@@ -124,10 +100,16 @@ Numero	= [0-9]+
 	{Numero}					{lista.add(Integer.parseInt(yytext()));}
 	
 	/* Reconoce un operador */
-	"+"							{yybegin(SUMA);}
-	"-"							{yybegin(RESTA);}
-	"*"							{yybegin(MULTIPLICACION);}
-	"/"							{yybegin(DIVISION);}
+	{Operador}					{operador = yytext();
+								 yybegin(OPERACION);}
+	
+	/* Reconoce un paréntesis final */
+	")"							{if (lista.size() > 1) {
+									operar(lista, "*");
+								 };}
+	
+	/* Reconoce el final de la línea */
+	";"							{System.out.println(lista.get(0));}
 	
 	
 	/* Cualquier otro lexema */
