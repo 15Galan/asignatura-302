@@ -21,7 +21,6 @@
   <component name="ChangeListManager">
     <list default="true" id="f69306e0-89a0-463f-aea7-5655dc2c4fb4" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Calculadora.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Calculadora.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Linea.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Linea.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Nodo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Nodo.java" afterDir="false" />
     </list>
@@ -47,7 +46,7 @@
     <property name="aspect.path.notification.shown" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../../../../../Proyecto" />
   </component>
-  <component name="RunManager" selected="Application.Test : entrada + salida (G)">
+  <component name="RunManager" selected="Application.Test : entrada + salida">
     <configuration name="Test : entrada + salida (G)" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="Calculadora" />
       <module name="Calculadora" />
@@ -79,17 +78,6 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration default="true" type="ArquillianJUnit" factoryName="" nameIsGenerated="true">
-      <option name="arquillianRunConfiguration">
-        <value>
-          <option name="containerStateName" value="" />
-        </value>
-      </option>
-      <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <list>
       <item itemvalue="Application.Test : teclado" />
       <item itemvalue="Application.Test : entrada" />
@@ -115,7 +103,9 @@
       <workItem from="1602771769816" duration="91000" />
       <workItem from="1602795026694" duration="4575000" />
       <workItem from="1602838780823" duration="19000" />
-      <workItem from="1602843810902" duration="16535000" />
+      <workItem from="1602843810902" duration="17433000" />
+      <workItem from="1602886294809" duration="4348000" />
+      <workItem from="1603013201061" duration="34000" />
     </task>
     <servers />
   </component>
@@ -135,10 +125,10 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="828" y="178" width="1092" height="715" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1602862629495">
+    <state x="828" y="178" width="1092" height="715" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1602889701558">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="828" y="178" width="1092" height="715" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1602862629495" />
+    <state x="828" y="178" width="1092" height="715" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1602889701558" />
     <state x="1209" y="325" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1602417650998">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -159,25 +149,25 @@
       <screen x="1920" y="0" width="1920" height="1040" />
     </state>
     <state x="2180" y="278" key="FileChooserDialogImpl/0.0.1920.1040/1920.0.1920.1040@1920.0.1920.1040" timestamp="1602754846241" />
-    <state width="914" height="220" key="GridCell.Tab.0.bottom" timestamp="1602871714716">
+    <state width="914" height="269" key="GridCell.Tab.0.bottom" timestamp="1602890766056">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="914" height="220" key="GridCell.Tab.0.bottom/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1602871714716" />
+    <state width="914" height="269" key="GridCell.Tab.0.bottom/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1602890766056" />
     <state width="1877" height="346" key="GridCell.Tab.0.bottom/0.0.1920.1040/1920.0.1920.1040@1920.0.1920.1040" timestamp="1602801445602" />
-    <state width="914" height="220" key="GridCell.Tab.0.center" timestamp="1602871714716">
+    <state width="914" height="269" key="GridCell.Tab.0.center" timestamp="1602890766056">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="914" height="220" key="GridCell.Tab.0.center/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1602871714716" />
+    <state width="914" height="269" key="GridCell.Tab.0.center/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1602890766056" />
     <state width="1877" height="346" key="GridCell.Tab.0.center/0.0.1920.1040/1920.0.1920.1040@1920.0.1920.1040" timestamp="1602801445601" />
-    <state width="914" height="220" key="GridCell.Tab.0.left" timestamp="1602871714716">
+    <state width="914" height="269" key="GridCell.Tab.0.left" timestamp="1602890766056">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="914" height="220" key="GridCell.Tab.0.left/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1602871714716" />
+    <state width="914" height="269" key="GridCell.Tab.0.left/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1602890766056" />
     <state width="1877" height="346" key="GridCell.Tab.0.left/0.0.1920.1040/1920.0.1920.1040@1920.0.1920.1040" timestamp="1602801445601" />
-    <state width="914" height="220" key="GridCell.Tab.0.right" timestamp="1602871714716">
+    <state width="914" height="269" key="GridCell.Tab.0.right" timestamp="1602890766056">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="914" height="220" key="GridCell.Tab.0.right/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1602871714716" />
+    <state width="914" height="269" key="GridCell.Tab.0.right/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1602890766056" />
     <state width="1877" height="346" key="GridCell.Tab.0.right/0.0.1920.1040/1920.0.1920.1040@1920.0.1920.1040" timestamp="1602801445601" />
     <state x="1084" y="222" key="RollbackChangesDialog" timestamp="1602870718442">
       <screen x="0" y="0" width="1920" height="1040" />
@@ -191,6 +181,10 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="985" y="255" width="909" height="630" key="com.intellij.xdebugger.impl.breakpoints.ui.BreakpointsDialogFactory$2/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1602424185572" />
+    <state x="1096" y="244" key="run.anything.popup" timestamp="1602887665628">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="1096" y="244" key="run.anything.popup/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1602887665628" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

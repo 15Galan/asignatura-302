@@ -5,14 +5,14 @@ public class Linea {
     private final char[] digitos = {'0','1','2','3','4','5','6','7','8','9'};
     private final char[] operadores = {'+', '-', '*', '/'};
 
-    private String linea;
-    private Nodo arbol;
+    private String linea;       // Expresión matemática
+    private Nodo arbol;         // Representación de la expresión
 
     public String resultado;    // Si la cadena es vacía, valdrá ""
 
 
     public Linea(String texto) {
-        linea = texto;
+        linea = comprimir(texto);
         arbol = new Nodo();
     }
 
@@ -43,28 +43,73 @@ public class Linea {
 
     // Linea
     /**
+     * Elimina todos los espacios de una línea.
+     *
+     * @param texto     Línea a modificar
+     *
+     * @return          La misma línea, sin espacios
+     */
+    private String comprimir(String texto) {
+        StringBuilder linea = new StringBuilder();
+
+        for (int i = 0; i < texto.length(); i++) {
+            if (!Character.isWhitespace(texto.charAt(i))) {
+                linea.append(texto.charAt(i));
+            }
+        }
+
+        return linea.toString();
+    }
+
+    /**
      * Lee una línea e inserta lo leído en un árbol de operaciones.
      */
     public void arbolizar() {
-        int n = -1;     // Debe apuntar al primer digito de un numero
+        int i = 0;      // Recorre toda la expresion principal
+        int n = -1;     // Apunta al primer digito de un numero
+        int e = 0;      // Recorre sub-expresiones
 
-        for (int i = 0; i < linea.length(); i++) {
-            char c = linea.charAt(i);
+        // Dividir expresiones de sumas (+)
+        while (i < linea.length()) {
+            if (linea.charAt(i) == '+') {
+                Linea expIzq = crearExpresion(e, i);
+                expIzq.arbolizar();
 
-            if (detectar(c) == Expresion.OPERADOR) {
-                arbol.insertar(String.valueOf(c), Expresion.OPERADOR);
-                arbol.insertar(numero(n), Expresion.NUMERO);
+                Linea expDer = crearExpresion(i+1, linea.length()-1);
+                expDer.arbolizar();
 
-                n = -1;     // Reinicio de la variable
+                arbol = new Nodo('+', expIzq.arbol, expDer.arbol);
 
-            } else if (detectar(c) == Expresion.NUMERO && n == -1) {
-                n = i;      // Primer digito
+                break;
             }
 
-            if (detectar(c) == Expresion.NUMERO && i == linea.length() - 1) {
-                arbol.insertar(numero(n), Expresion.NUMERO);
-            }
+            i++;
         }
+
+        // Tratamiento de otros operadores
+        
+
+
+
+//        for (int i = 0; i < linea.length(); i++) {
+//            char c = linea.charAt(i);
+//
+//            if (c == '+') {
+//                Linea exp1 = crearExpresion(e, i);
+//                arbol.insertar(String.valueOf(c), Expresion.OPERADOR);
+//                arbol.insertar(numero(n), Expresion.NUMERO);
+//
+//                n = -1;     // Reinicio de la variable
+//
+//            } else if (detectar(c) == Expresion.NUMERO && n == -1) {
+//                n = i;      // Primer digito
+//            }
+//
+//            if (detectar(c) == Expresion.NUMERO && i == linea.length() - 1) {
+//                arbol.insertar(numero(n), Expresion.NUMERO);
+//            }
+//        }
+
     }
 
     /**
@@ -101,40 +146,37 @@ public class Linea {
      * @return      NUMERO si es un numero, OPERADOR si es un operador, NULL si es un espacio
      */
     private Expresion detectar(char c) {
+        boolean encontrado = false;
         Expresion res = null;
+        int i = 0;
 
-        if (!Character.isWhitespace(c)) {
-            boolean encontrado = false;
-            int i = 0;
+        // Buscar entre los operadores
+        while (!encontrado && i < operadores.length) {
+            encontrado = operadores[i] == c;
+            i++;
+        }
 
-            // Buscar entre los operadores
-            while (!encontrado && i < operadores.length) {
-                encontrado = operadores[i] == c;
+        if (encontrado) {
+            res = Expresion.OPERADOR;
+        }
+
+        // Buscar entre los digitos
+        if (!encontrado) {
+            i = 0;
+
+            while (!encontrado && i < digitos.length) {
+                encontrado = digitos[i] == c;
                 i++;
             }
 
             if (encontrado) {
-                res = Expresion.OPERADOR;
+                res = Expresion.NUMERO;
             }
+        }
 
-            // Buscar entre los digitos
-            if (!encontrado) {
-                i = 0;
-
-                while (!encontrado && i < digitos.length) {
-                    encontrado = digitos[i] == c;
-                    i++;
-                }
-
-                if (encontrado) {
-                    res = Expresion.NUMERO;
-                }
-            }
-
-            // No es ni un operador, ni un digito, ni un espacio
-            if (!encontrado) {
-                throw new IllegalArgumentException("Carácter incorrecto: \"" + c + "\"");
-            }
+        // No es ni un operador, ni un digito, ni un espacio
+        if (!encontrado) {
+            throw new IllegalArgumentException("Carácter incorrecto: \"" + c + "\"");
         }
 
         return res;
@@ -143,10 +185,29 @@ public class Linea {
     /**
      * Ejecuta las operaciones del árbol.
      *
-     * @throws OperationsException
+     * @throws OperationsException  Error al operar
      */
     public void calcular() throws OperationsException {
         resultado = arbol.calcular();
+    }
+
+    /**
+     * Extrae una expresión contenida en la línea.
+     *
+     * @param inicio    Posición de la línea en la que empieza
+     * @param fin       Posición de la línea en la que acaba
+     *
+     * @return      Una línea basada en la expresión indicada
+     */
+    public Linea crearExpresion(int inicio, int fin) {
+        StringBuilder expresion = new StringBuilder();
+
+        while (inicio < fin) {
+            expresion.append(linea.charAt(inicio));
+            inicio++;
+        }
+
+        return new Linea(expresion.toString());
     }
 
 

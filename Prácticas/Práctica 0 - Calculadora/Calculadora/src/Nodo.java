@@ -137,7 +137,7 @@ public class Nodo {
      * Opera todos los nodos de un árbol y le asigna un
      * resultado a cada uno, según la operación que definen.
      *
-     * @throws OperationsException
+     * @throws OperationsException  Error al operar
      */
     public String calcular() throws OperationsException {
         Nodo copia = copiar(this);
