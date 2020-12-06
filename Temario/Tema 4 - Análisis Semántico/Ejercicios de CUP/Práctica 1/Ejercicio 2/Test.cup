@@ -1,0 +1,26 @@
+import java_cup.runtime.*;
+
+// Terminales
+terminal        INT, DOUBLE;    // Palabras reservadas
+terminal String IDENT;          // Nombre de una variable
+terminal        PYC;            // Fin de la definición
+
+// No-terminales
+non terminal    tipo, definicion;
+non terminal    variables_int;
+non terminal    variables_double;
+
+// Precedencias
+precedence right INT, DOUBLE, IDENT;
+precedence nonassoc PYC;
+
+// Reglas
+definicion ::= INT variables_int PYC
+             | DOUBLE variables_double PYC;
+
+variables_int ::= variables_int IDENT:i     {: System.out.print(i+":int; "); :}
+                | IDENT:i                   {: System.out.print(i+":int; "); :};
+
+variables_double ::= variables_double IDENT:i   {: System.out.print(i+":double; "); :}
+                   | IDENT:i                    {: System.out.print(i+":double; "); :};
+
