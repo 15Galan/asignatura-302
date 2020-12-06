@@ -6,7 +6,7 @@ echo "===== CUP ====="
 cup Calculadora.cup
 
 echo "==== JFLEX ===="
-jflex Calculadora.lex
+jflex Calculadora.flex
 
 echo "==== JAVAs ===="
 javac *.java
