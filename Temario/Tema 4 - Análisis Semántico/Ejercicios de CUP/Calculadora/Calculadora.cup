@@ -1,0 +1,37 @@
+import java_cup.runtime.*;
+
+/* Preliminares para montar el escáner */
+// init with    {: scanner.init();              :};
+// scan with    {: return scanner.next_token(); :};
+
+// Terminales
+terminal                SUM, RES, MUL, DIV;     // Operaciones
+terminal                AP, CP;                 // Paréntesis
+terminal                NEG;                    // Signo menos unario
+terminal                FIN;                    // Fin de línea
+terminal Integer        NUM;                    // Valor numérico
+
+// No-terminales
+non terminal            lineas, linea;      // Líneas del fichero
+non terminal Integer    exp;                // Expresión matemática
+
+// Precedencias
+precedence left         SUM, RES;   // Asociatividad izq    (prio 1)
+precedence left         MUL, DIV;   // Asociatividad izq    (prio 2)
+precedence nonassoc     AP, CP;     // Asociatividad nula   (prio 3)
+precedence nonassoc     NEG;        // Asociatividad nula   (prio 4)
+
+// Reglas
+lineas ::= lineas linea
+         | linea:r;
+
+linea ::= exp:e FIN         {: System.out.println(e); :};
+
+exp ::= exp:a SUM exp:b         {: RESULT = a + b; :}
+      | exp:a RES exp:b         {: RESULT = a - b; :}
+      | exp:a MUL exp:b         {: RESULT = a * b; :}
+      | exp:a DIV exp:b         {: RESULT = a / b; :}
+      | AP exp:e CP             {: RESULT = e;     :}
+      | RES exp:e %prec NEG     {: RESULT = -e;    :}
+      | NUM:n                   {: RESULT = n;     :};
+
