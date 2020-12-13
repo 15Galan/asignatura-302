@@ -1,0 +1,45 @@
+import java_cup.runtime.*;
+
+action code {: int x, y, z;
+               boolean fib = true, first = true;
+            :}
+    
+// Terminales
+terminal Integer NUMERO;
+
+
+// No-Terminales
+non terminal Boolean  exp, linea;
+
+
+// Precedencias
+
+
+// Gramática
+linea ::= exp linea
+        | exp:e             {: if (e) {
+                                    System.out.println("SI");
+                                    
+                                } else {
+                                    System.out.println("NO");
+                                }
+                            :};
+
+exp    ::= NUMERO:n    {: if ((!first) && (fib)) {
+                            z = n;
+                        
+                            if (x + y != z) {
+                                fib = false;
+                            }
+                          }
+                       
+                            y = x;
+                            x = n;
+                        
+                            if (y != 0) {
+                                first = fib;
+                            }
+                        
+                            RESULT = fib;
+                       :};
+
