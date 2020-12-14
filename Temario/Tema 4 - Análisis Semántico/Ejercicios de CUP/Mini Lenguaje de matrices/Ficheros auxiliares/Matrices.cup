@@ -1,14 +1,58 @@
 import java_cup.runtime.*;
+import java.util.ArrayList;
+
+
+action code {:
+    double[][] matriz;
+    
+    ArrayList<ArrayList<Double>> filas = new ArrayList<ArrayList<Double>>();
+    ArrayList<Double> fila = new ArrayList<Double>();
+    
+    String variable;
+:}
+
 
 // Terminales
+terminal    String  IDENT;                                  // Variables
+terminal    Double  NUMERO;                                 // Números
+terminal            ALL, CLL, AP, CP, AC, CC;               // Aperturas y cierres
+terminal            COMA, PYC, ASIG;                        // Símbolos de separación
+terminal            MAS, MENOS, POR, DIV;                   // Operaciones
+terminal            PRINT, INVERSA, TRANSPUESTA, ADJUNTA;   // Funciones matriciales
 
 
 // No-Terminales
+non terminal    linea;
+non terminal    definicion;
+non terminal    matriz;
+non terminal    filas, fila;
+non terminal    funcion;
+non terminal    argumento;
 
 
 // Precedencias
 
 
 // Gramática
+linea ::= definicion    PYC
+        | funcion       PYC;
 
+definicion ::= IDENT:v  ASIG    argumento       {: TablaSimbolos.insertar(v, matriz); :};
+
+matriz ::= AC   filas:f  CC                     {: matriz = Matrices.toArray(filas); :};
+
+filas ::= filas PYC fila:f                      {: filas.add((ArrayList<Double>) fila.clone()); fila.clear();   :}
+        | fila:f                                {: filas.add((ArrayList<Double>) fila.clone()); fila.clear();   :};
+
+fila ::= fila   COMA    NUMERO:n                {: fila.add(new Double(n)); :}
+       | NUMERO:n                               {: fila.add(new Double(n)); :};
+
+funcion ::= PRINT       AP  argumento   CP      {: Matrices.print(matriz);                  :} 
+          | INVERSA     AP  argumento   CP      {: matriz = Matrices.inversa(matriz);       :}
+          | TRANSPUESTA AP  argumento   CP      {: matriz = Matrices.transpuesta(matriz);   :}
+          | ADJUNTA     AP  argumento   CP      {: matriz = Matrices.adjunta(matriz);       :};
+
+// TODO - Identificadores y más "argumentos"
+argumento ::= funcion
+            | matriz;
 
