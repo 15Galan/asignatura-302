@@ -74,7 +74,7 @@ action code {:
 // Terminales
 terminal    String  IDENT;                                  // Variables
 terminal    double  NUMERO;                                 // Números
-terminal            ALL, CLL, AP, CP, AC, CC;               // Aperturas y cierres
+terminal            AP, CP, AC, CC, ALL, CLL;               // Aperturas y cierres (), [], {}
 terminal            COMA, PYC, ASIG;                        // Símbolos de separación
 terminal            MAS, MENOS, POR, DIV;                   // Operaciones
 terminal            PRINT, INVERSA, TRANSPUESTA, ADJUNTA;   // Funciones matriciales
@@ -92,11 +92,14 @@ non terminal                filas, fila;
 
 // Precedencias
 precedence  left    PRINT;
+precedence  left    IDENT;
 precedence  left    INVERSA, TRANSPUESTA, ADJUNTA;
+precedence  left    COMA;
 precedence  left    MAS, MENOS;
 precedence  left    POR, DIV;
 precedence  left    AP, CP;
 precedence  left    AC, CC;
+precedence  left    ALL, CLL;
 
 
 // Gramática
@@ -108,11 +111,14 @@ linea ::= definicion    PYC
 
 definicion ::= IDENT:v  ASIG    argumento:a         {:  TablaSimbolos.insertar(v, a);   :};
 
-matriz ::= AC   filas    CC                         {:  matriz = crearMatriz(filas);        filas.clear();                          :}
+matriz ::= AC   filas   CC                          {:  matriz = crearMatriz(filas);        filas.clear();                          :}
+         | ALL  filas   CLL                         {:  matriz = crearMatriz(filas);        filas.clear();                          :}
          | IDENT:v                                  {:  matriz = TablaSimbolos.buscar(v);   if (matriz == null) {   error(6);   }   :};
 
-filas ::= filas PYC fila                            {:  filas.add((ArrayList<Double>) fila.clone()); fila.clear();   :}
-        | fila                                      {:  filas.add((ArrayList<Double>) fila.clone()); fila.clear();   :};
+filas ::= filas PYC  fila                           {:  filas.add((ArrayList<Double>) fila.clone());    fila.clear();   :}
+        | filas COMA ALL fila CLL                   {:  filas.add((ArrayList<Double>) fila.clone());    fila.clear();   :}
+        | ALL fila CLL                              {:  filas.add((ArrayList<Double>) fila.clone());    fila.clear();   :}
+        | fila                                      {:  filas.add((ArrayList<Double>) fila.clone());    fila.clear();   :};
 
 fila ::= fila   COMA    NUMERO:n                    {:  fila.add(new Double(n)); :}
        | NUMERO:n                                   {:  fila.add(new Double(n)); :};
