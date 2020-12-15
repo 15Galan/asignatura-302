@@ -22,15 +22,21 @@ terminal            PRINT, INVERSA, TRANSPUESTA, ADJUNTA;   // Funciones matrici
 
 
 // No-Terminales
-non terminal    linea;
-non terminal    definicion;
-non terminal    matriz;
-non terminal    filas, fila;
-non terminal    funcion;
-non terminal    argumento;
+non terminal    double[][]  matriz;
+non terminal    double[][]  funcion;
+non terminal    double[][]  argumento;
+non terminal    double[][]  operacion;
+non terminal                linea;
+non terminal                definicion;
+non terminal                filas, fila;
 
 
 // Precedencias
+precedence  left    PRINT, INVERSA, TRANSPUESTA, ADJUNTA;
+precedence  left    MAS, MENOS;
+precedence  left    POR, DIV;
+precedence  left    AP, CP;
+precedence  left    AC, CC;
 
 
 // Gramática
@@ -39,7 +45,7 @@ linea ::= definicion    PYC
 
 definicion ::= IDENT:v  ASIG    argumento       {: TablaSimbolos.insertar(v, matriz); :};
 
-matriz ::= AC   filas:f  CC                     {: matriz = Matrices.toArray(filas); :};
+matriz ::= AC   filas:f  CC                     {: matriz = Matrices.toArray(filas);    filas.clear();  :};
 
 filas ::= filas PYC fila:f                      {: filas.add((ArrayList<Double>) fila.clone()); fila.clear();   :}
         | fila:f                                {: filas.add((ArrayList<Double>) fila.clone()); fila.clear();   :};
@@ -47,12 +53,14 @@ filas ::= filas PYC fila:f                      {: filas.add((ArrayList<Double>)
 fila ::= fila   COMA    NUMERO:n                {: fila.add(new Double(n)); :}
        | NUMERO:n                               {: fila.add(new Double(n)); :};
 
-funcion ::= PRINT       AP  argumento   CP      {: Matrices.print(matriz);                  :} 
-          | INVERSA     AP  argumento   CP      {: matriz = Matrices.inversa(matriz);       :}
-          | TRANSPUESTA AP  argumento   CP      {: matriz = Matrices.transpuesta(matriz);   :}
-          | ADJUNTA     AP  argumento   CP      {: matriz = Matrices.adjunta(matriz);       :};
+funcion ::= PRINT       AP  argumento:m CP      {: Matrices.print(m);                  :} 
+          | INVERSA     AP  argumento:m CP      {: matriz = Matrices.inversa(m);       :}
+          | TRANSPUESTA AP  argumento:m CP      {: matriz = Matrices.transpuesta(m);   :}
+          | ADJUNTA     AP  argumento:m CP      {: matriz = Matrices.adjunta(m);       :};
 
-// TODO - Identificadores y más "argumentos"
-argumento ::= funcion
-            | matriz;
+argumento ::= argumento:a   MAS     argumento:b     {: matriz = Matrices.suma(a,b);                         RESULT = matriz;    :}
+            | argumento:a   MENOS   argumento:b     {: matriz = Matrices.suma(a, Matrices.producto(-1, b)); RESULT = matriz;    :}
+            | argumento:a   POR     argumento:b     {: matriz = Matrices.producto(a,b);                     RESULT = matriz;    :}
+            | argumento:a   DIV     argumento:b     {: matriz = Matrices.producto(a, Matrices.inversa(b));  RESULT = matriz;    :}
+            | matriz                                {: RESULT = matriz; :};
 
