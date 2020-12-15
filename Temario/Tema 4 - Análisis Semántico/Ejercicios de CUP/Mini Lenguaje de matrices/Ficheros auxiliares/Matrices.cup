@@ -8,7 +8,50 @@ action code {:
     ArrayList<ArrayList<Double>> filas = new ArrayList<ArrayList<Double>>();
     ArrayList<Double> fila = new ArrayList<Double>();
     
-    String variable;
+    public void error(int id) {
+        switch (id) {
+            case 1 :
+                System.out.println(Matrices.ERROR_FILAS);
+                break;
+            
+            case 2 :
+                System.out.println(Matrices.ERROR_INVERSA);
+                break;
+
+            case 3 :
+                System.out.println(Matrices.ERROR_ADJUNTA);
+                break;
+                
+            case 4 :
+                System.out.println(Matrices.ERROR_PROD);
+                break;
+                
+            case 5 :
+                System.out.println(Matrices.ERROR_SUMA);
+                break;
+            
+            case 6 :
+                System.out.println(TablaSimbolos.ERROR_NOEXISTE);
+                break;
+            
+            default:
+                System.out.println("Error desconocido");
+                break;
+        }
+    }
+    
+    public double[][] crearMatriz(ArrayList<ArrayList<Double>> filas) {
+        double[][] matriz = null;
+        
+        try {
+            matriz = Matrices.toArray(filas);
+            
+        } catch (Exception e) {
+            error(1);
+        }
+        
+        return matriz;
+    }
 :}
 
 
@@ -32,7 +75,8 @@ non terminal                filas, fila;
 
 
 // Precedencias
-precedence  left    PRINT, INVERSA, TRANSPUESTA, ADJUNTA;
+precedence  left    PRINT;
+precedence  left    INVERSA, TRANSPUESTA, ADJUNTA;
 precedence  left    MAS, MENOS;
 precedence  left    POR, DIV;
 precedence  left    AP, CP;
@@ -45,7 +89,7 @@ linea ::= definicion    PYC
 
 definicion ::= IDENT:v  ASIG    argumento       {: TablaSimbolos.insertar(v, matriz); :};
 
-matriz ::= AC   filas:f  CC                     {: matriz = Matrices.toArray(filas);    filas.clear();  :};
+matriz ::= AC   filas:f  CC                     {: matriz = crearMatriz(filas); filas.clear();  :};
 
 filas ::= filas PYC fila:f                      {: filas.add((ArrayList<Double>) fila.clone()); fila.clear();   :}
         | fila:f                                {: filas.add((ArrayList<Double>) fila.clone()); fila.clear();   :};
@@ -53,14 +97,15 @@ filas ::= filas PYC fila:f                      {: filas.add((ArrayList<Double>)
 fila ::= fila   COMA    NUMERO:n                {: fila.add(new Double(n)); :}
        | NUMERO:n                               {: fila.add(new Double(n)); :};
 
-funcion ::= PRINT       AP  argumento:m CP      {: Matrices.print(m);                  :} 
-          | INVERSA     AP  argumento:m CP      {: matriz = Matrices.inversa(m);       :}
-          | TRANSPUESTA AP  argumento:m CP      {: matriz = Matrices.transpuesta(m);   :}
-          | ADJUNTA     AP  argumento:m CP      {: matriz = Matrices.adjunta(m);       :};
+funcion ::= PRINT       AP  argumento:m CP      {: if (m != null) Matrices.print(m);    :} 
+          | INVERSA     AP  argumento:m CP      {: matriz = Matrices.inversa(m);        :}
+          | TRANSPUESTA AP  argumento:m CP      {: matriz = Matrices.transpuesta(m);    :}
+          | ADJUNTA     AP  argumento:m CP      {: matriz = Matrices.adjunta(m);        :};
 
 argumento ::= argumento:a   MAS     argumento:b     {: matriz = Matrices.suma(a,b);                         RESULT = matriz;    :}
             | argumento:a   MENOS   argumento:b     {: matriz = Matrices.suma(a, Matrices.producto(-1, b)); RESULT = matriz;    :}
             | argumento:a   POR     argumento:b     {: matriz = Matrices.producto(a,b);                     RESULT = matriz;    :}
             | argumento:a   DIV     argumento:b     {: matriz = Matrices.producto(a, Matrices.inversa(b));  RESULT = matriz;    :}
-            | matriz                                {: RESULT = matriz; :};
+            | funcion                               {: RESULT = matriz;                                                         :}
+            | matriz                                {: RESULT = matriz;                                                         :};
 
