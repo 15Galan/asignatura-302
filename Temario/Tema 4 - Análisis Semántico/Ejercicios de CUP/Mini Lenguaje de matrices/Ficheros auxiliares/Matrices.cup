@@ -8,6 +8,8 @@ action code {:
     ArrayList<ArrayList<Double>> filas = new ArrayList<ArrayList<Double>>();
     ArrayList<Double> fila = new ArrayList<Double>();
     
+    boolean excepcion = false;
+    
     public void error(int id) {
         switch (id) {
             case 1 :
@@ -38,6 +40,8 @@ action code {:
                 System.out.println("Error desconocido");
                 break;
         }
+        
+        excepcion = true;
     }
     
     public double[][] crearMatriz(ArrayList<ArrayList<Double>> filas) {
@@ -51,6 +55,18 @@ action code {:
         }
         
         return matriz;
+    }
+    
+    public boolean cuadrada(double[][] matriz) {
+        return Matrices.filas(matriz) == Matrices.columnas(matriz);
+    }
+    
+    public boolean sumables(double[][] matrizA, double[][] matrizB) {
+        return Matrices.filas(matrizA) == Matrices.filas(matrizA) && Matrices.filas(matrizB) == Matrices.filas(matrizB);
+    }
+    
+    public boolean multiplicables(double[][] matrizA, double[][] matrizB) {
+        return Matrices.columnas(matrizA) == Matrices.filas(matrizB);
     }
 :}
 
@@ -97,15 +113,15 @@ filas ::= filas PYC fila:f                      {: filas.add((ArrayList<Double>)
 fila ::= fila   COMA    NUMERO:n                {: fila.add(new Double(n)); :}
        | NUMERO:n                               {: fila.add(new Double(n)); :};
 
-funcion ::= PRINT       AP  argumento:m CP      {: if (m != null) Matrices.print(m);    :} 
-          | INVERSA     AP  argumento:m CP      {: matriz = Matrices.inversa(m);        :}
-          | TRANSPUESTA AP  argumento:m CP      {: matriz = Matrices.transpuesta(m);    :}
-          | ADJUNTA     AP  argumento:m CP      {: matriz = Matrices.adjunta(m);        :};
+funcion ::= PRINT       AP  argumento:m CP          {:  if (m != null && !excepcion)                        Matrices.print(m);                                          :} 
+          | INVERSA     AP  argumento:m CP          {:  if (m != null && cuadrada(m) && !excepcion)     {   matriz = Matrices.inversa(m);   } else {    error(2);   }   :}
+          | TRANSPUESTA AP  argumento:m CP          {:  if (m != null && !excepcion)                        matriz = Matrices.transpuesta(m);                           :}
+          | ADJUNTA     AP  argumento:m CP          {:  if (m != null && cuadrada(m) && !excepcion)     {   matriz = Matrices.adjunta(m);   } else {    error(3);   }   :};
 
-argumento ::= argumento:a   MAS     argumento:b     {: matriz = Matrices.suma(a,b);                         RESULT = matriz;    :}
-            | argumento:a   MENOS   argumento:b     {: matriz = Matrices.suma(a, Matrices.producto(-1, b)); RESULT = matriz;    :}
-            | argumento:a   POR     argumento:b     {: matriz = Matrices.producto(a,b);                     RESULT = matriz;    :}
-            | argumento:a   DIV     argumento:b     {: matriz = Matrices.producto(a, Matrices.inversa(b));  RESULT = matriz;    :}
-            | funcion                               {: RESULT = matriz;                                                         :}
-            | matriz                                {: RESULT = matriz;                                                         :};
+argumento ::= argumento:a   MAS     argumento:b     {:  if (sumables(a,b) && !excepcion)        {   matriz = Matrices.suma(a,b);                            RESULT = matriz;    } else {    error(5);   }   :}
+            | argumento:a   MENOS   argumento:b     {:  if (sumables(a,b) && !excepcion)        {   matriz = Matrices.suma(a, Matrices.producto(-1, b));    RESULT = matriz;    } else {    error(5);   }   :}
+            | argumento:a   POR     argumento:b     {:  if (multiplicables(a,b) && !excepcion)  {   matriz = Matrices.producto(a,b);                        RESULT = matriz;    } else {    error(4);   }   :}
+            | argumento:a   DIV     argumento:b     {:  if (multiplicables(a,b) && !excepcion)  {   matriz = Matrices.producto(a, Matrices.inversa(b));     RESULT = matriz;    } else {    error(4);   }   :}
+            | funcion                               {:  RESULT = matriz; :}
+            | matriz                                {:  RESULT = matriz; :};
 
