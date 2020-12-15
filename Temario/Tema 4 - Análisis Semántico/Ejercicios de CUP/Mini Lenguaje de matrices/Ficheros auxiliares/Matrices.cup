@@ -73,7 +73,7 @@ action code {:
 
 // Terminales
 terminal    String  IDENT;                                  // Variables
-terminal    Double  NUMERO;                                 // Números
+terminal    double  NUMERO;                                 // Números
 terminal            ALL, CLL, AP, CP, AC, CC;               // Aperturas y cierres
 terminal            COMA, PYC, ASIG;                        // Símbolos de separación
 terminal            MAS, MENOS, POR, DIV;                   // Operaciones
@@ -85,7 +85,7 @@ non terminal    double[][]  matriz;
 non terminal    double[][]  funcion;
 non terminal    double[][]  argumento;
 non terminal    double[][]  operacion;
-non terminal                linea;
+non terminal                lineas, linea;
 non terminal                definicion;
 non terminal                filas, fila;
 
@@ -100,12 +100,16 @@ precedence  left    AC, CC;
 
 
 // Gramática
+lineas ::=  lineas linea
+         |  linea;
+
 linea ::= definicion    PYC
         | funcion       PYC;
 
-definicion ::= IDENT:v  ASIG    argumento       {: TablaSimbolos.insertar(v, matriz); :};
+definicion ::= IDENT:v  ASIG    argumento:a     {:  TablaSimbolos.insertar(v, a);   :};
 
-matriz ::= AC   filas:f  CC                     {: matriz = crearMatriz(filas); filas.clear();  :};
+matriz ::= AC   filas:f  CC                     {:  matriz = crearMatriz(filas);        filas.clear();  :}
+         | IDENT:v                              {:  matriz = TablaSimbolos.buscar(v);   if (matriz == null) {   error(6);    }   :};
 
 filas ::= filas PYC fila:f                      {: filas.add((ArrayList<Double>) fila.clone()); fila.clear();   :}
         | fila:f                                {: filas.add((ArrayList<Double>) fila.clone()); fila.clear();   :};
@@ -122,6 +126,7 @@ argumento ::= argumento:a   MAS     argumento:b     {:  if (sumables(a,b) && !ex
             | argumento:a   MENOS   argumento:b     {:  if (sumables(a,b) && !excepcion)        {   matriz = Matrices.suma(a, Matrices.producto(-1, b));    RESULT = matriz;    } else {    error(5);   }   :}
             | argumento:a   POR     argumento:b     {:  if (multiplicables(a,b) && !excepcion)  {   matriz = Matrices.producto(a,b);                        RESULT = matriz;    } else {    error(4);   }   :}
             | argumento:a   DIV     argumento:b     {:  if (multiplicables(a,b) && !excepcion)  {   matriz = Matrices.producto(a, Matrices.inversa(b));     RESULT = matriz;    } else {    error(4);   }   :}
+            | AP    argumento:a     CP              {:  RESULT = a;      :}
             | funcion                               {:  RESULT = matriz; :}
             | matriz                                {:  RESULT = matriz; :};
 
