@@ -100,27 +100,27 @@ precedence  left    AC, CC;
 
 
 // Gramática
-lineas ::=  lineas linea
+lineas ::=  lineas  linea
          |  linea;
 
 linea ::= definicion    PYC
         | funcion       PYC;
 
-definicion ::= IDENT:v  ASIG    argumento:a     {:  TablaSimbolos.insertar(v, a);   :};
+definicion ::= IDENT:v  ASIG    argumento:a         {:  TablaSimbolos.insertar(v, a);   :};
 
-matriz ::= AC   filas:f  CC                     {:  matriz = crearMatriz(filas);        filas.clear();  :}
-         | IDENT:v                              {:  matriz = TablaSimbolos.buscar(v);   if (matriz == null) {   error(6);    }   :};
+matriz ::= AC   filas    CC                         {:  matriz = crearMatriz(filas);        filas.clear();                          :}
+         | IDENT:v                                  {:  matriz = TablaSimbolos.buscar(v);   if (matriz == null) {   error(6);   }   :};
 
-filas ::= filas PYC fila:f                      {: filas.add((ArrayList<Double>) fila.clone()); fila.clear();   :}
-        | fila:f                                {: filas.add((ArrayList<Double>) fila.clone()); fila.clear();   :};
+filas ::= filas PYC fila                            {:  filas.add((ArrayList<Double>) fila.clone()); fila.clear();   :}
+        | fila                                      {:  filas.add((ArrayList<Double>) fila.clone()); fila.clear();   :};
 
-fila ::= fila   COMA    NUMERO:n                {: fila.add(new Double(n)); :}
-       | NUMERO:n                               {: fila.add(new Double(n)); :};
+fila ::= fila   COMA    NUMERO:n                    {:  fila.add(new Double(n)); :}
+       | NUMERO:n                                   {:  fila.add(new Double(n)); :};
 
-funcion ::= PRINT       AP  argumento:m CP          {:  if (m != null && !excepcion)                        Matrices.print(m);                                          :} 
-          | INVERSA     AP  argumento:m CP          {:  if (m != null && cuadrada(m) && !excepcion)     {   matriz = Matrices.inversa(m);   } else {    error(2);   }   :}
-          | TRANSPUESTA AP  argumento:m CP          {:  if (m != null && !excepcion)                        matriz = Matrices.transpuesta(m);                           :}
-          | ADJUNTA     AP  argumento:m CP          {:  if (m != null && cuadrada(m) && !excepcion)     {   matriz = Matrices.adjunta(m);   } else {    error(3);   }   :};
+funcion ::= PRINT       AP  argumento:m CP          {:  if (m != null && !excepcion)                        Matrices.print(m);                                              :} 
+          | INVERSA     AP  argumento:m CP          {:  if (m != null && cuadrada(m) && !excepcion)     {   matriz = Matrices.inversa(m);       } else {    error(2);   }   :}
+          | TRANSPUESTA AP  argumento:m CP          {:  if (m != null && !excepcion)                        matriz = Matrices.transpuesta(m);                               :}
+          | ADJUNTA     AP  argumento:m CP          {:  if (m != null && cuadrada(m) && !excepcion)     {   matriz = Matrices.adjunta(m);       } else {    error(3);   }   :};
 
 argumento ::= argumento:a   MAS     argumento:b     {:  if (sumables(a,b) && !excepcion)        {   matriz = Matrices.suma(a,b);                            RESULT = matriz;    } else {    error(5);   }   :}
             | argumento:a   MENOS   argumento:b     {:  if (sumables(a,b) && !excepcion)        {   matriz = Matrices.suma(a, Matrices.producto(-1, b));    RESULT = matriz;    } else {    error(5);   }   :}
