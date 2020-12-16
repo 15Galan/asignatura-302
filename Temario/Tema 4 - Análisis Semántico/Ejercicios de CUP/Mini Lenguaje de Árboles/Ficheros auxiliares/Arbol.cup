@@ -1,20 +1,93 @@
 import java_cup.runtime.*;
-
+import java.io.*; 
+import java.util.*; 
 
 // Terminales
-
+terminal            ALL, CLL;
+terminal            COMA;
+terminal    Integer NUMERO;
 
 
 // No-Terminales
-
+non terminal    linea;
+non terminal    Arbol arbol;
 
 
 // Precedencias
-
+precedence  left    NUMERO;
+precedence  left    COMA;
+precedence  left    ALL, CLL;
 
 
 // Gramática
+linea ::= arbol:a   {:  System.out.println(a);  :};
 
+arbol ::= ALL arbol:izq COMA NUMERO:r COMA arbol:der CLL    {:  Arbol a = new Arbol();
+                                                                
+                                                                // Raíz
+                                                                a.raiz = r;
+                                                                
+                                                                // Máximo
+                                                                if ((izq.maximo - r > 0) && (izq.maximo - der.maximo > 0)){
+						                                            a.maximo = izq.maximo;
+						                                            
+					                                            } else if ((der.maximo - r > 0) && (der.maximo - izq.maximo > 0)){
+						                                            a.maximo = der.maximo;
+						                                            
+				                                                } else {
+					                                                a.maximo = r;
+				                                                }
+                                                                
+                                                                // Profundidad
+                                                                if (der.profundidad <= izq.profundidad) {
+                                                                    a.profundidad = 1 + izq.profundidad;
+                                                                
+                                                                } else {
+                                                                    a.profundidad = 1 + der.profundidad;
+                                                                }
 
-
+                                                                a.elementos = 1 + izq.elementos + der.elementos;
+                                                                
+                                                                // Suma de Nivel
+                                                                int i = 1;
+                                                                
+                                                                a.sumaNivel[0] = a.raiz;
+                                                                
+                                                                while (i <= a.profundidad-1) {
+                                                                    a.sumaNivel[i] = 0;
+                                                                    
+                                                                    if (izq.sumaNivel[i-1] != null) {
+                                                                        a.sumaNivel[i] += izq.sumaNivel[i-1];
+                                                                    }
+                                                                    
+                                                                    if (der.sumaNivel[i-1] != null) {
+                                                                        a.sumaNivel[i] += der.sumaNivel[i-1];
+                                                                    }
+                                                                    
+                                                                    i++;
+                                                                }
+                                                                
+                                                                // Árbol inverso
+                                                                a.arbolInverso = "{" + der.arbolInverso + "," + r + "," + izq.arbolInverso + "}";
+                                                                
+                                                                // Grafo
+                                                                a.grafo = r + " -> {" + izq.raiz + "," + der.raiz + "}; ";
+                                                                a.grafo = izq.grafo + a.grafo + der.grafo;
+                                                                
+                                                                RESULT = a;
+                                                            :}
+                                                            
+        | NUMERO:h  {:  Arbol a = new Arbol();
+                        
+			      		a.raiz = h;
+			      		a.maximo = h;
+			      		a.profundidad = 1;
+			      		a.elementos = 1;
+			      		
+			      		a.sumaNivel[0] = a.raiz;
+			      		
+			      		a.arbolInverso = h.toString();
+			      		
+			      		RESULT = a;
+			      	:};
 
