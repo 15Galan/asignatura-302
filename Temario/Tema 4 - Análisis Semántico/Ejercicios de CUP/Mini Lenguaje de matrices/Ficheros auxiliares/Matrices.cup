@@ -62,7 +62,7 @@ action code {:
     }
     
     public boolean sumables(double[][] matrizA, double[][] matrizB) {
-        return Matrices.filas(matrizA) == Matrices.filas(matrizA) && Matrices.filas(matrizB) == Matrices.filas(matrizB);
+        return Matrices.filas(matrizA) == Matrices.filas(matrizB) && Matrices.columnas(matrizA) == Matrices.columnas(matrizB);
     }
     
     public boolean multiplicables(double[][] matrizA, double[][] matrizB) {
