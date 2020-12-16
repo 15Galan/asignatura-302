@@ -1,0 +1,10 @@
+Raiz: 6
+Maximo: 6
+Profundidad: 3
+Elementos: 7
+Suma nivel 0: 6
+Suma nivel 1: 3
+Suma nivel 2: 11
+Arbol inverso: {{4,2,3},6,{3,1,1}}
+Grafo: 1 -> {1,3}; 6 -> {1,2}; 2 -> {3,4}; 
+

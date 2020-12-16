@@ -1,0 +1,9 @@
+Raiz: 4
+Maximo: 5
+Profundidad: 2
+Elementos: 3
+Suma nivel 0: 4
+Suma nivel 1: 8
+Arbol inverso: {3,4,5}
+Grafo: 4 -> {5,3}; 
+
