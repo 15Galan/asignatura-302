@@ -1,22 +1,18 @@
 import java_cup.runtime.*;
-import java.io.*; 
-import java.util.*; 
+
 
 // Terminales
+terminal    Integer NUMERO;
 terminal            ALL, CLL;
 terminal            COMA;
-terminal    Integer NUMERO;
 
 
 // No-Terminales
-non terminal    linea;
-non terminal    Arbol arbol;
+non terminal    Arbol   arbol;
+non terminal            linea;
 
 
 // Precedencias
-precedence  left    NUMERO;
-precedence  left    COMA;
-precedence  left    ALL, CLL;
 
 
 // Gramática
@@ -29,14 +25,14 @@ arbol ::= ALL arbol:izq COMA NUMERO:r COMA arbol:der CLL    {:  Arbol a = new Ar
                                                                 
                                                                 // Máximo
                                                                 if ((izq.maximo - r > 0) && (izq.maximo - der.maximo > 0)){
-						                                            a.maximo = izq.maximo;
-						                                            
-					                                            } else if ((der.maximo - r > 0) && (der.maximo - izq.maximo > 0)){
-						                                            a.maximo = der.maximo;
-						                                            
-				                                                } else {
-					                                                a.maximo = r;
-				                                                }
+                                                                    a.maximo = izq.maximo;
+                                                                    
+                                                                } else if ((der.maximo - r > 0) && (der.maximo - izq.maximo > 0)){
+                                                                    a.maximo = der.maximo;
+                                                                    
+                                                                } else {
+                                                                    a.maximo = r;
+                                                                }
                                                                 
                                                                 // Profundidad
                                                                 if (der.profundidad <= izq.profundidad) {
@@ -45,7 +41,8 @@ arbol ::= ALL arbol:izq COMA NUMERO:r COMA arbol:der CLL    {:  Arbol a = new Ar
                                                                 } else {
                                                                     a.profundidad = 1 + der.profundidad;
                                                                 }
-
+                                                                
+                                                                // Elementos
                                                                 a.elementos = 1 + izq.elementos + der.elementos;
                                                                 
                                                                 // Suma de Nivel
@@ -79,15 +76,15 @@ arbol ::= ALL arbol:izq COMA NUMERO:r COMA arbol:der CLL    {:  Arbol a = new Ar
                                                             
         | NUMERO:h  {:  Arbol a = new Arbol();
                         
-			      		a.raiz = h;
-			      		a.maximo = h;
-			      		a.profundidad = 1;
-			      		a.elementos = 1;
-			      		
-			      		a.sumaNivel[0] = a.raiz;
-			      		
-			      		a.arbolInverso = h.toString();
-			      		
-			      		RESULT = a;
-			      	:};
+                        a.raiz = h;
+                        a.maximo = h;
+                        a.profundidad = 1;
+                        a.elementos = 1;
+                          
+                        a.sumaNivel[0] = a.raiz;
+                          
+                        a.arbolInverso = h.toString();
+                          
+                        RESULT = a;
+                    :};
 
