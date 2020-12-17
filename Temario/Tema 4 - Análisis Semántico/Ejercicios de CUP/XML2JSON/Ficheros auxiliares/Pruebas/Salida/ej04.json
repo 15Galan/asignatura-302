@@ -1,0 +1,17 @@
+{
+    level1:{
+        subkey1: subvalue1,
+        level2: {
+            subkey21: subvalue21,
+            level3: {
+                subkey31: subvalue31,
+                subkey32: subvalue32,
+                level4: {
+                    subkey41: subvalue41,
+                }
+            }
+            subkey22: subvalue22,
+        }
+    }
+}
+

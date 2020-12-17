@@ -1,0 +1,25 @@
+import java_cup.runtime.*;
+
+
+// Terminales
+terminal    String  OPEN_TAG, CLOSE_TAG;
+terminal    String  TEXT;
+
+
+// No-Terminales
+non terminal            fichero;
+non terminal    String  lineas, linea;
+
+
+// Precedencias
+
+
+// Gramática
+fichero ::= lineas:ls   {:  System.out.println("{\n"+ls+"\n}"); :};
+
+lineas  ::= lineas:ls   linea:l     {:  RESULT = ls+",\n"+l;    :}
+          | linea:l                 {:  RESULT = l;             :};
+
+linea ::= OPEN_TAG:a    lineas:ls   CLOSE_TAG:c     {:  RESULT = a+": {\n"+ls+"\n}";    :}
+        | OPEN_TAG:a    TEXT:t      CLOSE_TAG:c     {:  RESULT = a+": "+t;              :};
+
