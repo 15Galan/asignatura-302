@@ -1,0 +1,74 @@
+En el lenguaje JAVA existen (entre otros) 2 tipos de números enteros (entero corto,
+y entero largo) y 2 de números reales (real corto y real largo). Las constantes
+enteras se pueden escribir, independientemente de su tamaño, en forma decimal,
+octal o hexadecimal. Las constantes reales se escriben en forma decimal y/o empleando
+la notación científica (con exponente).
+
+Por ejemplo, para escribir el número "ciento veintisiete" de manera que sea un
+número entero basta con escribir "127", pero si se quiere que sea un entero largo
+habrá que añadir una "l" o una "L" al final, es decir : "127L" o bien "127l".
+Asimismo, cualquier número entero se puede representar también en octal si comienza
+por 0, por ejemplo : "0177", o en hexadecimal, si comienza por 0x, como por ejemplo:
+"0x7f" o bien "0x7F". Ambos tipos de representación son aceptables también para
+enteros largos, añadiendo una L (mayúscula o minúscula) al final, por ejemplo:
+"0x7fL".
+
+Las constantes que representan números reales son similares a las de otros lenguajes,
+es decir se escriben en notación decimal usando un punto para separar la parte entera
+de la parte decimal, y opcionalmente el exponente en base 10. A derecha o a la izquierda
+del punto decimal debe escribirse al menos un dígito. Por ejemplo, son números reales
+válidos : "127.0", "0.127", "012.7E+1" , "12.7E1", "12E+7", ".12", "12.", "12.E12",
+"1270.00E-2", etc.
+
+Para indicar que una constante corresponde a un número real corto debe añadirse
+una "f" o una "F" al final, y para indicar que es largo una "d" o una "D". Por
+defecto los números reales son siempre largos, así que si no se indica nada al
+final se consideran largos.
+
+Se pide:
+
+a) Construir mediante LEX un analizador léxico para las constantes numéricas de
+JAVA que sea capaz de devolver los siguientes tokens (representados mediante
+números enteros):
+
+TOKEN_CTE_ENTERO
+TOKEN_CTE_ENTERO_LARGO
+TOKEN_CTE_REAL_CORTO
+TOKEN_CTE_REAL_LARGO
+
+b) Detectar secuencias de caracteres incorrectas no correspondientes a números
+válidos en Java, como por ejemplo las secuencias "ab", "1b", "1x2" "12-12", ".E-1"
+(se requiere al menos un digito antes o después del punto), "089" (ni el 8 ni el
+9 son dígitos octales válidos), etc.
+En estos casos debe devolverse un token de error:
+
+TOKEN_ERROR
+
+Para realizar este ejercicio deben usarse los ficheros "MainNumJava.java" y "Yytoken.java",
+que en ningún caso pueden modificarse. Debe enviarse un solo fichero fuente denominado
+"NumJava.lex", que se compilará y ejecutará junto a los ficheros anteriores mediante
+la secuencia de instrucciones:
+
+jflex NumJava.lex
+javac MainNumJava.java
+java MainNumJava
+
+El archivo debe superar las siguientes pruebas:
+* Pruebas con números enteros de una cifra
+* Pruebas con números enteros de dos o mas cifras
+* Pruebas con números enteros en octal
+* Pruebas con números enteros en hexadecimal
+* Pruebas con números enteros enteros largos en decimal, octal y hexadecimal
+* Pruebas con números enteros incorrectos en octal
+* Pruebas con números enteros incorrectos en hexadecimal
+* Pruebas con números decimales sin exponente
+* Pruebas con números decimales sin exponente, omitiendo digitos antes o detrás del punto
+* Pruebas con números decimales con exponente
+* Pruebas con números con mantisa entera y con exponente
+* Pruebas con números reales incorrectos
+* Pruebas con números reales cortos y largos
+* Pruebas con números reales varios números en una misma línea
+* Pruebas con números reales varios números en una misma línea con errores intercalados
+
+
+NOTA: Como no se proporcionan pruebas, he creado el fichero "lexemas.txt" con diferentes ejemplos.
