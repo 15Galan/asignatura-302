@@ -1,0 +1,12 @@
+Raiz: 8
+Maximo: 15
+Profundidad: 5
+Elementos: 15
+Suma nivel 0: 8
+Suma nivel 1: 14
+Suma nivel 2: 31
+Suma nivel 3: 43
+Suma nivel 4: 24
+Arbol inverso: {{{15,14,{13,12,11}},10,9},8,{{7,6,5},4,{3,2,1}}}
+Grafo: 2 -> {1,3}; 4 -> {2,6}; 6 -> {5,7}; 8 -> {4,10}; 10 -> {9,14}; 12 -> {11,13}; 14 -> {12,15}; 
+

@@ -1,0 +1,28 @@
+import java_cup.runtime.*;
+
+// Terminales
+terminal            MAS, MENOS, POR, DIV;   // Operaciones
+terminal            AP, CP;                 // Paréntesis
+terminal String     NUMERO;                 // Valor numérico
+terminal String     IDENT;                  // Variable
+
+// No-terminales
+non terminal            linea;  // Línea para imprimir el resultado
+non terminal String     exp;    // Expresión matemática
+
+// Precedencias
+precedence left         MAS, MENOS;     // Asociatividad izq    (prio 1)
+precedence left         POR, DIV;       // Asociatividad izq    (prio 2)
+precedence nonassoc     AP, CP;         // Asociatividad nula   (prio 3)
+
+// Reglas
+linea ::= exp linea
+        | exp:e             {: System.out.println(e); :};
+
+exp ::= exp:a MAS exp:b     {: RESULT = " + " + a + " " + b; :}
+      | exp:a MENOS exp:b   {: RESULT = " - " + a + " " + b; :}
+      | exp:a POR exp:b     {: RESULT = " * " + a + " " + b; :}
+      | exp:a DIV exp:b     {: RESULT = " / " + a + " " + b; :}
+      | AP exp:e CP         {: RESULT = e; :}
+      | IDENT:i             {: RESULT = i; :}
+      | NUMERO:n            {: RESULT = n; :};

@@ -1,0 +1,138 @@
+import java_cup.runtime.*;
+import java.util.ArrayList;
+
+
+action code {:
+    double[][] matriz;
+    
+    ArrayList<ArrayList<Double>> filas = new ArrayList<ArrayList<Double>>();
+    ArrayList<Double> fila = new ArrayList<Double>();
+    
+    boolean excepcion = false;
+    
+    public void error(int id) {
+        switch (id) {
+            case 1 :
+                System.out.println(Matrices.ERROR_FILAS);
+                break;
+            
+            case 2 :
+                System.out.println(Matrices.ERROR_INVERSA);
+                break;
+
+            case 3 :
+                System.out.println(Matrices.ERROR_ADJUNTA);
+                break;
+                
+            case 4 :
+                System.out.println(Matrices.ERROR_PROD);
+                break;
+                
+            case 5 :
+                System.out.println(Matrices.ERROR_SUMA);
+                break;
+            
+            case 6 :
+                System.out.println(TablaSimbolos.ERROR_NOEXISTE);
+                break;
+            
+            default:
+                System.out.println("Error desconocido");
+                break;
+        }
+        
+        excepcion = true;
+    }
+    
+    public double[][] crearMatriz(ArrayList<ArrayList<Double>> filas) {
+        double[][] matriz = null;
+        
+        try {
+            matriz = Matrices.toArray(filas);
+            
+        } catch (Exception e) {
+            error(1);
+        }
+        
+        return matriz;
+    }
+    
+    public boolean cuadrada(double[][] matriz) {
+        return Matrices.filas(matriz) == Matrices.columnas(matriz);
+    }
+    
+    public boolean sumables(double[][] matrizA, double[][] matrizB) {
+        return Matrices.filas(matrizA) == Matrices.filas(matrizB) && Matrices.columnas(matrizA) == Matrices.columnas(matrizB);
+    }
+    
+    public boolean multiplicables(double[][] matrizA, double[][] matrizB) {
+        return Matrices.columnas(matrizA) == Matrices.filas(matrizB);
+    }
+:}
+
+
+// Terminales
+terminal    String  IDENT;                                  // Variables
+terminal    double  NUMERO;                                 // Números
+terminal            AP, CP, AC, CC, ALL, CLL;               // Aperturas y cierres (), [], {}
+terminal            COMA, PYC, ASIG;                        // Símbolos de separación
+terminal            MAS, MENOS, POR, DIV;                   // Operaciones
+terminal            PRINT, INVERSA, TRANSPUESTA, ADJUNTA;   // Funciones matriciales
+
+
+// No-Terminales
+non terminal    double[][]  matriz;
+non terminal    double[][]  funcion;
+non terminal    double[][]  argumento;
+non terminal    double[][]  operacion;
+non terminal                lineas, linea;
+non terminal                definicion;
+non terminal                filas, fila;
+
+
+// Precedencias
+precedence  left    PRINT;
+precedence  left    IDENT;
+precedence  left    INVERSA, TRANSPUESTA, ADJUNTA;
+precedence  left    COMA;
+precedence  left    MAS, MENOS;
+precedence  left    POR, DIV;
+precedence  left    AP, CP;
+precedence  left    AC, CC;
+precedence  left    ALL, CLL;
+
+
+// Gramática
+lineas ::=  lineas  linea
+         |  linea;
+
+linea ::= definicion    PYC
+        | funcion       PYC;
+
+definicion ::= IDENT:v  ASIG    argumento:a         {:  TablaSimbolos.insertar(v, a);   :};
+
+matriz ::= AC   filas   CC                          {:  matriz = crearMatriz(filas);        filas.clear();                          :}
+         | ALL  filas   CLL                         {:  matriz = crearMatriz(filas);        filas.clear();                          :}
+         | IDENT:v                                  {:  matriz = TablaSimbolos.buscar(v);   if (matriz == null) {   error(6);   }   :};
+
+filas ::= filas PYC  fila                           {:  filas.add((ArrayList<Double>) fila.clone());    fila.clear();   :}
+        | filas COMA ALL fila CLL                   {:  filas.add((ArrayList<Double>) fila.clone());    fila.clear();   :}
+        | ALL fila CLL                              {:  filas.add((ArrayList<Double>) fila.clone());    fila.clear();   :}
+        | fila                                      {:  filas.add((ArrayList<Double>) fila.clone());    fila.clear();   :};
+
+fila ::= fila   COMA    NUMERO:n                    {:  fila.add(new Double(n)); :}
+       | NUMERO:n                                   {:  fila.add(new Double(n)); :};
+
+funcion ::= PRINT       AP  argumento:m CP          {:  if (m != null && !excepcion)                        Matrices.print(m);                                              :} 
+          | INVERSA     AP  argumento:m CP          {:  if (m != null && cuadrada(m) && !excepcion)     {   matriz = Matrices.inversa(m);       } else {    error(2);   }   :}
+          | TRANSPUESTA AP  argumento:m CP          {:  if (m != null && !excepcion)                        matriz = Matrices.transpuesta(m);                               :}
+          | ADJUNTA     AP  argumento:m CP          {:  if (m != null && cuadrada(m) && !excepcion)     {   matriz = Matrices.adjunta(m);       } else {    error(3);   }   :};
+
+argumento ::= argumento:a   MAS     argumento:b     {:  if (sumables(a,b) && !excepcion)        {   matriz = Matrices.suma(a,b);                            RESULT = matriz;    } else {    error(5);   }   :}
+            | argumento:a   MENOS   argumento:b     {:  if (sumables(a,b) && !excepcion)        {   matriz = Matrices.suma(a, Matrices.producto(-1, b));    RESULT = matriz;    } else {    error(5);   }   :}
+            | argumento:a   POR     argumento:b     {:  if (multiplicables(a,b) && !excepcion)  {   matriz = Matrices.producto(a,b);                        RESULT = matriz;    } else {    error(4);   }   :}
+            | argumento:a   DIV     argumento:b     {:  if (multiplicables(a,b) && !excepcion)  {   matriz = Matrices.producto(a, Matrices.inversa(b));     RESULT = matriz;    } else {    error(4);   }   :}
+            | AP    argumento:a     CP              {:  RESULT = a;      :}
+            | funcion                               {:  RESULT = matriz; :}
+            | matriz                                {:  RESULT = matriz; :};
+

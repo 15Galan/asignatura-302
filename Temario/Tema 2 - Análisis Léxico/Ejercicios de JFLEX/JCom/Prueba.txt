@@ -1,0 +1,4 @@
+System.out.println("Los comentarios se escriben /* asi */");
+/* Un comentario de una sola línea empieza por // */
+// Para documentar se usan comentarios /** documentacion */
+

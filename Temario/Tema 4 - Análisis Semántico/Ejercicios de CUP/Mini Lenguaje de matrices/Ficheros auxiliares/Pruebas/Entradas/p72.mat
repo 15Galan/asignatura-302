@@ -1,0 +1,6 @@
+c = [1,2,3,4; 7,3,2,1; 4,3,9,5];
+a = [1,0,3,4; 4,0,2,1; 7,4,3,2];
+f = a * (transpuesta(c)+transpuesta(a))
+  + ([1;5;2]+transpuesta([2,4,8]))*[3,6,9];
+print(f*inversa(f));
+

@@ -1,0 +1,5 @@
+a = [3,2,1; 4,6,5; 7,8,9];
+b = inversa(a);
+print(a);
+print(b);
+print(b*a);

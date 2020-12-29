@@ -1,0 +1,33 @@
+Se desea implementar mediante JFLEX un programa que detecte en un fichero que
+contenga texto con palabras, (por ejemplo, soneto.txt).
+
+Las palabras se pueden escribir solo con letras mayusculas o minusculas,
+excluyendo la Ñ y las vocales acentuadas. Se establecen 4 categorias de palabras:
+
+- Palabras que tienen al menos dos vocales seguidas, y terminan en vocal. → A
+- Palabras que NO tienen dos vocales seguidas, y terminan en vocal → B
+- Palabras que tienen al menos dos vocales seguidas, y terminan en consonante → C
+- Palabras que NO tienen dos vocales seguidas, y terminan en consonante → D
+
+Para implementar este programa se usarán 2 ficheros, un fichero "cpv.java" que
+contenga la clase principal, y un fichero "cpv.lex" que contenga las especificaciones,
+de manera que el programa pueda compilarse con las siguientes instrucciones:
+
+> jflex cpv.lex
+> javac *.java
+
+y pueda ejecutarse con la instrucción:
+
+> java cpv soneto.txt
+
+dando como resultado:
+
+A 21
+B 44
+C 0
+D 28
+
+
+Para este ejercicio se debe enviar un solo fichero comprimido denominado "cpv.zip",
+que contenga al menos los ficheros "cpv.lex" y "cpv.java" y cualquier otro fichero
+.java que haga falta para compilar el programa.

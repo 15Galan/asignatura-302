@@ -1,0 +1,6 @@
+*.mkv
+**/.idea/*
+!.idea/workspace.xml
+**/out/*
+**\~
+**.class

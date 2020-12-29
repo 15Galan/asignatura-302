@@ -1,0 +1,20 @@
+import java_cup.runtime.*;
+
+// Terminales
+terminal IDENT;     // Identificador (palabras)
+terminal NUMERO;    // Número
+
+// No-terminales
+non terminal        valores;    // Conjunto de varios valores
+non terminal String valor;      // Una palabra o un número
+
+// Precedencias
+precedence nonassoc IDENT, NUMERO;  // Asociatividad nula (prio 1)
+
+// Reglas
+valores ::= valor:v valores   {: System.out.print(v + " "); :}
+          | valor:v           {: System.out.print(v); :};
+
+valor ::= IDENT:i       {: RESULT = i.toString(); :}
+        | NUMERO:n      {: RESULT = n.toString(); :};
+

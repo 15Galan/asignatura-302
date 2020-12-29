@@ -1,0 +1,24 @@
+import java_cup.runtime.*;
+
+
+// Terminales
+terminal            INT, DOUBLE;    // Palabras reservadas
+terminal            PYC, COMA, DP;  // Símbolos
+terminal String     IDENT;          // Variable
+
+
+// No-Terminales
+non terminal        linea, variables;
+
+
+// Precedencias
+
+
+
+// Gramática
+linea ::= variables:v DP INT PYC        {: System.out.println("int " + v + ";");    :}
+        | variables:v DP DOUBLE PYC     {: System.out.println("double " + v + ";"); :};
+
+variables ::= IDENT:i COMA variables:v  {: RESULT = i + ", " + v; :}
+            | IDENT:i                   {: RESULT = i; :};
+
