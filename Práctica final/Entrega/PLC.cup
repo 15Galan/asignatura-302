@@ -45,6 +45,10 @@ action code {:
                 PLC.out.println(var + " = -" + a + ";");
                 break;
             
+            case "v":
+                PLC.out.println(var + " = " + a + ";");
+                break;
+            
             case "print":
                 PLC.out.println("print " + var + ";");
                 break;
@@ -97,6 +101,7 @@ sent ::= IF AP cond CP sents
        | DO sents WHILE AP cond CP PYC
        | FOR AP exp PYC cond PYC exp CP sents
        | PRINT AP exp:e CP PYC                  {: RESULT = e;  escribirFichero("print", null, null, e);   :}
+       | AL sents:s CL                          {: RESULT = s; :}
        | exp:e PYC;
 
 exp ::= exp:a SUM exp:b     {: RESULT = generarVariable();  escribirFichero("+", a, b, RESULT);     :}

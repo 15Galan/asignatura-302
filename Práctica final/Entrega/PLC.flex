@@ -55,7 +55,7 @@ import java_cup.runtime.*;
 
 // Valores
 [0-9]+                  { return new Symbol(sym.NUM, yytext()); }
-[_a-z][_a-zA-Z0-9]*     { return new Symbol(sym.VAR, yytext()); }
+[_a-zA-Z][_a-zA-Z0-9]*  { return new Symbol(sym.VAR, yytext()); }
 
 
 
