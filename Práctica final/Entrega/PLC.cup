@@ -1,0 +1,123 @@
+import java_cup.runtime.*;
+import java.util.HashMap;
+
+
+// Acciones JAVA
+action code {:
+    
+    // Variables globales
+    private int var = 0;
+    
+    /**
+     * Genera una variable con la estructura '$vX', siendo X un número.
+     */
+    private String generarVariable() {
+        return "$v" + (var++);
+    }
+    
+    /**
+     * Genera el código intermedio y lo escribe en el fichero de salida (.ctd).
+     * 
+     * 
+     * @param   id  Identificador del código a escribir
+     * @param   a   Primer argumento del código
+     * @param   b   Último argumento del código
+     */
+    private void escribirFichero(String id, String a, String b, String var) {
+        switch (id) {
+            case "+":
+                PLC.out.println(var + " = " + a + " + " + b + ";");
+                break;
+                
+            case "-":
+                PLC.out.println(var + " = " + a + " - " + b + ";");
+                break;
+                
+            case "*":
+                PLC.out.println(var + " = " + a + " * " + b + ";");
+                break;
+                
+            case "/":
+                PLC.out.println(var + " = " + a + " / " + b + ";");
+                break;
+            
+            case "n":
+                PLC.out.println(var + " = -" + a + ";");
+                break;
+            
+            case "print":
+                PLC.out.println("print " + var + ";");
+                break;
+                
+            default:
+                System.err.println("Error al leer '" + id + "'");
+        }
+    }
+:}
+
+
+// Terminales
+terminal    IF, ELSE, DO, WHILE, FOR, PRINT;        // Funciones del lenguaje
+terminal    EQ, NE, LT, LE, GT, GE, NO, AND, OR;    // Operadores lógicos
+terminal    SUM, RES, MUL, DIV, NEG, IGUAL;         // Operadores matemáticos
+terminal    AP, CP, AC, CC, AL, CL;                 // Aperturas y cierres
+terminal    PYC;                                    // Fin de línea
+
+terminal    String  VAR, NUM;    // Valores numéricos
+
+
+// No-terminales
+non terminal    sents, sent;    // Sentencias
+non terminal    cond;           // Condición
+
+non terminal    String  exp;    // Expresión matemática
+
+
+// Precedencias
+precedence  left        IF, ELSE, DO, WHILE, FOR, PRINT;  
+precedence  left        SUM, RES;
+precedence  left        MUL, DIV;
+precedence  left        EQ, LE, GE;
+precedence  left        NE, LT, GT;
+precedence  left        NO, AND, OR;
+
+precedence  nonassoc    NEG;
+precedence  nonassoc    AP, CP;
+precedence  nonassoc    AC, CC;
+precedence  nonassoc    AL, CL;
+
+
+// Gramática
+sents ::= sents sent
+        | sent;
+
+sent ::= IF AP cond CP sents
+       | IF AP cond CP sents:a ELSE sents:b
+       | WHILE AP cond CP sents
+       | DO sents WHILE AP cond CP PYC
+       | FOR AP exp PYC cond PYC exp CP sents
+       | PRINT AP exp:e CP PYC                  {: RESULT = e;  escribirFichero("print", null, null, e);   :}
+       | exp:e PYC;
+
+exp ::= exp:a SUM exp:b     {: RESULT = generarVariable();  escribirFichero("+", a, b, RESULT);     :}
+      | exp:a RES exp:b     {: RESULT = generarVariable();  escribirFichero("-", a, b, RESULT);     :}
+      | exp:a MUL exp:b     {: RESULT = generarVariable();  escribirFichero("*", a, b, RESULT);     :}
+      | exp:a DIV exp:b     {: RESULT = generarVariable();  escribirFichero("/", a, b, RESULT);     :}
+      | AP exp:e CP         {: RESULT = e;                                                          :}
+      | RES exp:e           {: RESULT = generarVariable();  escribirFichero("n", e, null, RESULT);  :}
+        %prec NEG
+      | VAR:v IGUAL exp:e   {: RESULT = v;  escribirFichero("v", e, null, RESULT);                  :}
+      | VAR:v               {: RESULT = v;                                                          :}
+      | NUM:n               {: RESULT = n;                                                          :};
+
+cond ::= exp:a EQ exp:b
+       | exp:a NE exp:b
+       | exp:a LT exp:b
+       | exp:a LE exp:b
+       | exp:a GT exp:b
+       | exp:a GE exp:b
+       | NO cond
+       | cond:a AND cond:b
+       | exp:a OR exp:b
+       | AP cond CP;
+
