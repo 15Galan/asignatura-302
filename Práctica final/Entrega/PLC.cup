@@ -8,53 +8,58 @@ action code {:
     // Variables globales
     private int var = 0;
     
+    
     /**
      * Genera una variable con la estructura '$vX', siendo X un número.
      */
-    private String generarVariable() {
+    private String crearVariable() {
         return "$v" + (var++);
     }
     
     /**
      * Genera el código intermedio y lo escribe en el fichero de salida (.ctd).
      * 
-     * 
-     * @param   id  Identificador del código a escribir
-     * @param   a   Primer argumento del código
-     * @param   b   Último argumento del código
+     * @param   id      Identificador del código a escribir
+     * @param   a       Primer argumento del código
+     * @param   b       Último argumento del código
+     * @param   var     Variable o etiqueta (según el id) para la referencia
      */
     private void escribirFichero(String id, String a, String b, String var) {
         switch (id) {
+            // Referencias
+            case "v":
+                PLC.out.println("\t" + var + " = " + a + ";");
+                break;
+                
+            // Operadores
             case "+":
-                PLC.out.println(var + " = " + a + " + " + b + ";");
+                PLC.out.println("\t" + var + " = " + a + " + " + b + ";");
                 break;
                 
             case "-":
-                PLC.out.println(var + " = " + a + " - " + b + ";");
+                PLC.out.println("\t" + var + " = " + a + " - " + b + ";");
                 break;
                 
             case "*":
-                PLC.out.println(var + " = " + a + " * " + b + ";");
+                PLC.out.println("\t" + var + " = " + a + " * " + b + ";");
                 break;
                 
             case "/":
-                PLC.out.println(var + " = " + a + " / " + b + ";");
+                PLC.out.println("\t" + var + " = " + a + " / " + b + ";");
                 break;
             
             case "n":
-                PLC.out.println(var + " = -" + a + ";");
+                PLC.out.println("\t" + var + " = -" + a + ";");
                 break;
             
-            case "v":
-                PLC.out.println(var + " = " + a + ";");
-                break;
-            
+            // Funciones
             case "print":
-                PLC.out.println("print " + var + ";");
+                PLC.out.println("\tprint " + var + ";");
                 break;
                 
+                
             default:
-                System.err.println("Error al leer '" + id + "'");
+                System.err.println("Error al leer '" + id + "'.");
         }
     }
 :}
@@ -104,14 +109,14 @@ sent ::= IF AP cond CP sents
        | AL sents:s CL                          {: RESULT = s; :}
        | exp:e PYC;
 
-exp ::= exp:a SUM exp:b     {: RESULT = generarVariable();  escribirFichero("+", a, b, RESULT);     :}
-      | exp:a RES exp:b     {: RESULT = generarVariable();  escribirFichero("-", a, b, RESULT);     :}
-      | exp:a MUL exp:b     {: RESULT = generarVariable();  escribirFichero("*", a, b, RESULT);     :}
-      | exp:a DIV exp:b     {: RESULT = generarVariable();  escribirFichero("/", a, b, RESULT);     :}
+exp ::= exp:a SUM exp:b     {: RESULT = crearVariable();    escribirFichero("+", a, b, RESULT);     :}
+      | exp:a RES exp:b     {: RESULT = crearVariable();    escribirFichero("-", a, b, RESULT);     :}
+      | exp:a MUL exp:b     {: RESULT = crearVariable();    escribirFichero("*", a, b, RESULT);     :}
+      | exp:a DIV exp:b     {: RESULT = crearVariable();    escribirFichero("/", a, b, RESULT);     :}
       | AP exp:e CP         {: RESULT = e;                                                          :}
-      | RES exp:e           {: RESULT = generarVariable();  escribirFichero("n", e, null, RESULT);  :}
+      | RES exp:e           {: RESULT = crearVariable();    escribirFichero("n", e, null, RESULT);  :}
         %prec NEG
-      | VAR:v IGUAL exp:e   {: RESULT = v;  escribirFichero("v", e, null, RESULT);                  :}
+      | VAR:v IGUAL exp:e   {: RESULT = v;                  escribirFichero("v", e, null, RESULT);  :}
       | VAR:v               {: RESULT = v;                                                          :}
       | NUM:n               {: RESULT = n;                                                          :};
 
