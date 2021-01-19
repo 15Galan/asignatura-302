@@ -1,7 +1,7 @@
 import java_cup.runtime.*;
 
 
-// Acciones JAVA
+/* ACCIONES JAVA */
 action code {:
     
     // Variables globales
@@ -9,6 +9,7 @@ action code {:
     private int etq = 0;
     
     
+    // Generadores de referencias
     /**
      * Genera una variable con la estructura '$vX', siendo X un número.
      */
@@ -23,69 +24,57 @@ action code {:
         return "E" + (etq++);
     }
     
-    /**
-     * Genera el código intermedio y lo escribe en el fichero de salida (.ctd).
-     * 
-     * @param   id      Identificador del código a escribir
-     * @param   a       Primer argumento del código
-     * @param   b       Último argumento del código
-     * @param   var     Variable o etiqueta (según el id) para la referencia
-     */
-    private void escribirFichero(String id, String a, String b, String var) {
-        switch (id) {
-        
-            // Referencias
-            case "v":
-                PLC.out.println("\t" + var + " = " + a + ";");
-                break;
-            
-            case "etq":
-                PLC.out.println(var + ":");
-                break;
-                
-            // Operadores
-            case "+":
-                PLC.out.println("\t" + var + " = " + a + " + " + b + ";");
-                break;
-                
-            case "-":
-                PLC.out.println("\t" + var + " = " + a + " - " + b + ";");
-                break;
-                
-            case "*":
-                PLC.out.println("\t" + var + " = " + a + " * " + b + ";");
-                break;
-                
-            case "/":
-                PLC.out.println("\t" + var + " = " + a + " / " + b + ";");
-                break;
-            
-            case "n":
-                PLC.out.println("\t" + var + " = -" + a + ";");
-                break;
-            
-            // Funciones
-            case "print":
-                PLC.out.println("\tprint " + var + ";");
-                break;
-            
-            case "if<":
-                PLC.out.println("\tif (" + a + " < " + b + ") goto " + var + ";");
-                break;
-            
-            case "if=":
-                PLC.out.println("\tif (" + a + " == " + b + ") goto " + var + ";");
-                break;
-            
-            case "goto":
-                PLC.out.println("\tgoto " + var + ";");
-                break;
-                
-                
-            default:
-                System.err.println("Error al leer '" + id + "'.");
-        }
+    
+    // Generadores de código intermedio (.ctd)
+    // ----------------------------------------------------------------------------------
+    
+    // Referencias
+    public void variable(String variable, String valor) {
+         PLC.out.println("\t" + variable + " = " + valor + ";");
     }
+    
+    public void etiqueta(String etiqueta) {
+         PLC.out.println(etiqueta + ":");
+    }
+    
+    public void salto(String etiqueta) {
+        PLC.out.println("\tgoto " + etiqueta + ";");
+    }
+    
+    // Operdores
+    public void suma(String variable, String a, String b) {
+        PLC.out.println("\t" + variable + " = " + a + " + " + b + ";");
+    }
+    
+    public void resta(String variable, String a, String b) {
+        PLC.out.println("\t" + variable + " = " + a + " - " + b + ";");
+    }
+    
+    public void producto(String variable, String a, String b) {
+        PLC.out.println("\t" + variable + " = " + a + " * " + b + ";");
+    }
+    
+    public void division(String variable, String a, String b) {
+        PLC.out.println("\t" + variable + " = " + a + " / " + b + ";");
+    }
+    
+    public void negativo(String variable, String a) {
+        PLC.out.println("\t" + variable + " = -" + a + ";");
+    }
+    
+    // Funciones
+    public void print(String argumento) {
+        PLC.out.println("\tprint " + argumento + ";");
+    }
+    
+    public void ifMenor(String a, String b, String etiqueta) {
+        PLC.out.println("\tif (" + a + " < " + b + ") goto " + etiqueta + ";");
+    }
+    
+    public void ifIgual(String a, String b, String etiqueta) {
+        PLC.out.println("\tif (" + a + " == " + b + ") goto " + etiqueta + ";");
+    }
+    // ----------------------------------------------------------------------------------
     
     
     /* Esta clase interna se encarga de almacenar 3 etiquetas diferentes
@@ -116,15 +105,15 @@ action code {:
         
         
         // Getters
-        public String getEtiqueta1() {
+        public String etqTrue() {
             return etiquetas[0];
         }
         
-        public String getEtiqueta2() {
+        public String etqFalse() {
             return etiquetas[1];
         }
         
-        public String getEtiqueta3() {
+        public String etqSalida() {
             return etiquetas[2];
         }
         
@@ -133,15 +122,15 @@ action code {:
         }
         
         // Setters
-        public void setEtiqueta1(String etiqueta) {
+        public void setEtqTrue(String etiqueta) {
             etiquetas[0] = etiqueta;
         }
         
-        public void setEtiqueta2(String etiqueta) {
+        public void setEtqFalse(String etiqueta) {
             etiquetas[1] = etiqueta;
         }
         
-        public void setEtiqueta3(String etiqueta) {
+        public void setEtqSalida(String etiqueta) {
             etiquetas[2] = etiqueta;
         }
         
@@ -152,7 +141,7 @@ action code {:
 :}
 
 
-// Terminales
+/* TERMINALES */
 terminal    IF, ELSE, DO, WHILE, FOR, PRINT;        // Funciones del lenguaje
 terminal    EQ, NE, LT, LE, GT, GE, NO, AND, OR;    // Operadores lógicos
 terminal    SUM, RES, MUL, DIV, NEG, IGUAL;         // Operadores matemáticos
@@ -162,15 +151,16 @@ terminal    PYC;                                    // Fin de línea
 terminal    String  VAR, NUM;    // Valores numéricos
 
 
-// No-terminales
+/* NO-TERMINALES */
 non terminal    sents, sent;            // Sentencias genéricas
+non terminal    sent_print;             // Sentencia de función 'print'
 non terminal    sent_if, sent_else;     // Sentencia de función 'if' ó 'if-else'
 
 non terminal    Condicion   cond;   // Condición
 non terminal    String      exp;    // Expresión matemática
 
 
-// Precedencias
+/* PRECEDENCIAS */
 precedence  left        IF, ELSE, DO, WHILE, FOR, PRINT;  
 precedence  left        SUM, RES;
 precedence  left        MUL, DIV;
@@ -185,49 +175,52 @@ precedence  nonassoc    AC, CC;
 precedence  nonassoc    AL, CL;
 
 
-// Gramática
-sents ::= sents sent
-        | sent;
+/* GRAMÁTICA */
+// Sentencias
+sents   ::= sents sent
+          | sent;
 
-sent ::= sent_if
-       | WHILE AP cond CP sents
-       | DO sents WHILE AP cond CP PYC
-       | FOR AP exp PYC cond PYC exp CP sents
-       | PRINT AP exp:e CP PYC                  {: RESULT = e;  escribirFichero("print", null, null, e);   :}
-       | AL sents:s CL                          {: RESULT = s; :}
-       | exp:e PYC;
+sent    ::= exp PYC
+          | sent_print
+          | sent_if
+          | WHILE AP cond CP sents
+          | DO sents WHILE AP cond CP PYC
+          | FOR AP exp PYC cond PYC exp CP sents
+          | AL sents:s CL                           {:  RESULT = s; :};
 
 // Funciones
-sent_if     ::= IF AP cond:c CP     {:  c.setEtiqueta3(crearEtiqueta());                        escribirFichero("etq", null, null, c.getEtiqueta1()); :}
-                sents               {:  escribirFichero("goto", null, null, c.getEtiqueta3());  escribirFichero("etq", null, null, c.getEtiqueta2()); :}
-                sent_else           {:  escribirFichero("etq", null, null, c.getEtiqueta3());                                                         :};
+sent_print  ::= PRINT AP exp:e CP PYC   {: RESULT = e;  print(e);   :};
 
-sent_else   ::= ELSE sent:s         {:  RESULT = s; :}
+sent_if     ::= IF AP cond:c CP         {:  c.setEtqSalida(crearEtiqueta());    etiqueta(c.etqTrue());  :}
+                sents                   {:  salto(c.etqSalida());               etiqueta(c.etqFalse()); :}
+                sent_else               {:  etiqueta(c.etqSalida());                                    :};
+
+sent_else   ::= ELSE sent:s             {:  RESULT = s; :}
               | /* Vacío */ ;
 
 // Expresiones
-exp ::= exp:a SUM exp:b     {: RESULT = crearVariable();    escribirFichero("+", a, b, RESULT);     :}
-      | exp:a RES exp:b     {: RESULT = crearVariable();    escribirFichero("-", a, b, RESULT);     :}
-      | exp:a MUL exp:b     {: RESULT = crearVariable();    escribirFichero("*", a, b, RESULT);     :}
-      | exp:a DIV exp:b     {: RESULT = crearVariable();    escribirFichero("/", a, b, RESULT);     :}
-      | AP exp:e CP         {: RESULT = e;                                                          :}
-      | RES exp:e           {: RESULT = crearVariable();    escribirFichero("n", e, null, RESULT);  :}
-        %prec NEG
-      | VAR:v IGUAL exp:e   {: RESULT = v;                  escribirFichero("v", e, null, RESULT);  :}
-      | VAR:v               {: RESULT = v;                                                          :}
-      | NUM:n               {: RESULT = n;                                                          :};
+exp     ::= exp:a SUM exp:b     {:  RESULT = crearVariable();   suma(RESULT, a, b);     :}
+          | exp:a RES exp:b     {:  RESULT = crearVariable();   resta(RESULT, a, b);    :}
+          | exp:a MUL exp:b     {:  RESULT = crearVariable();   producto(RESULT, a, b); :}
+          | exp:a DIV exp:b     {:  RESULT = crearVariable();   division(RESULT, a, b); :}
+          | AP exp:e CP         {:  RESULT = e;                                         :}
+          | RES exp:e           {:  RESULT = crearVariable();   negativo(RESULT, e);    :}
+            %prec NEG
+          | VAR:v IGUAL exp:e   {:  RESULT = v;     variable(RESULT, e);    :}
+          | VAR:v               {:  RESULT = v;                             :}
+          | NUM:n               {:  RESULT = n;                             :};
 
 // Condiciones
-cond ::= exp:a EQ exp:b     {:  RESULT = new Condicion();   escribirFichero("if=", a, b, RESULT.getEtiqueta1());    escribirFichero("goto", null, null, RESULT.getEtiqueta2());                                                                 :}
-       | exp:a NE exp:b     {:  RESULT = new Condicion();   escribirFichero("if=", a, b, RESULT.getEtiqueta2());    escribirFichero("goto", null, null, RESULT.getEtiqueta1());                                                                 :}
-       | exp:a LT exp:b     {:  RESULT = new Condicion();   escribirFichero("if<", a, b, RESULT.getEtiqueta1());    escribirFichero("goto", null, null, RESULT.getEtiqueta2());                                                                 :}
-       | exp:a LE exp:b     {:  RESULT = new Condicion();   escribirFichero("if<", a, b, RESULT.getEtiqueta1());    escribirFichero("if=", a, b, RESULT.getEtiqueta1());            escribirFichero("goto", null, null, RESULT.getEtiqueta2()); :}
-       | exp:a GT exp:b     {:  RESULT = new Condicion();   escribirFichero("if<", a, b, RESULT.getEtiqueta2());    escribirFichero("if=", a, b, RESULT.getEtiqueta2());            escribirFichero("goto", null, null, RESULT.getEtiqueta1()); :}
-       | exp:a GE exp:b     {:  RESULT = new Condicion();   escribirFichero("if<", a, b, RESULT.getEtiqueta2());    escribirFichero("goto", null, null, RESULT.getEtiqueta1());                                                                 :}
-       | cond:a AND         {:                              escribirFichero("etq", null, null, a.getEtiqueta1());                                                                                                                               :}
-         cond:b             {:                              escribirFichero("etq", null, null, a.getEtiqueta2());   escribirFichero("goto", null, null, b.getEtiqueta2());          RESULT = b;                                                 :}
-       | cond:a OR          {:                              escribirFichero("etq", null, null, a.getEtiqueta2());                                                                                                                               :}
-         cond:b             {:                              escribirFichero("etq", null, null, a.getEtiqueta1());   escribirFichero("goto", null, null, b.getEtiqueta1());          RESULT = b;                                                 :}
-       | NO cond:c          {:  RESULT = new Condicion(c.getEtiqueta2(), c.getEtiqueta1());   :}
-       | AP cond CP;
+cond    ::= exp:a EQ exp:b      {:  RESULT = new Condicion();   ifIgual(a, b, RESULT.etqTrue());    salto(RESULT.etqFalse());                                       :}
+          | exp:a NE exp:b      {:  RESULT = new Condicion();   ifIgual(a, b, RESULT.etqFalse());   salto(RESULT.etqTrue());                                        :}
+          | exp:a LT exp:b      {:  RESULT = new Condicion();   ifMenor(a, b, RESULT.etqTrue());    salto(RESULT.etqFalse());                                       :}
+          | exp:a LE exp:b      {:  RESULT = new Condicion();   ifMenor(a, b, RESULT.etqTrue());    ifIgual(a, b, RESULT.etqTrue());    salto(RESULT.etqFalse());   :}
+          | exp:a GT exp:b      {:  RESULT = new Condicion();   ifMenor(a, b, RESULT.etqFalse());   ifIgual(a, b, RESULT.etqFalse());   salto(RESULT.etqTrue());    :}
+          | exp:a GE exp:b      {:  RESULT = new Condicion();   ifMenor(a, b, RESULT.etqFalse());   salto(RESULT.etqTrue());                                        :}
+          | AP cond CP
+          | NO cond:c           {:  RESULT = new Condicion(c.etqFalse(), c.etqTrue());              :}
+          | cond:a AND          {:  etiqueta(a.etqTrue());                                          :}
+            cond:b              {:  etiqueta(a.etqFalse());     salto(b.etqFalse());    RESULT = b; :}
+          | cond:a OR           {:  etiqueta(a.etqFalse());                                         :}
+            cond:b              {:  etiqueta(a.etqTrue());      salto(b.etqTrue());     RESULT = b; :};
 
