@@ -1,0 +1,30 @@
+	if (a == 0) goto E0;
+	goto E1;
+E0:
+	if (b < a) goto E3;
+	if (b == a) goto E3;
+	goto E4;
+E3:
+	$v0 = a * b;
+	if (c < $v0) goto E7;
+	goto E6;
+E6:
+	print c;
+	goto E8;
+E7:
+E8:
+	$v1 = -1;
+	a = $v1;
+	$v2 = -1;
+	b = $v2;
+	$v3 = -1;
+	c = $v3;
+	goto E5;
+E4:
+E5:
+	$v4 = a * b;
+	$v5 = $v4 * c;
+	print $v5;
+	goto E2;
+E1:
+E2:

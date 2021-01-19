@@ -1,5 +1,4 @@
 import java_cup.runtime.*;
-import java.util.HashMap;
 
 
 // Acciones JAVA
@@ -7,6 +6,7 @@ action code {:
     
     // Variables globales
     private int var = 0;
+    private int etq = 0;
     
     
     /**
@@ -14,6 +14,13 @@ action code {:
      */
     private String crearVariable() {
         return "$v" + (var++);
+    }
+    
+    /**
+     * Genera una etiqueta con la estructura 'EX', siendo X un número.
+     */
+    private String crearEtiqueta() {
+        return "E" + (etq++);
     }
     
     /**
@@ -26,9 +33,14 @@ action code {:
      */
     private void escribirFichero(String id, String a, String b, String var) {
         switch (id) {
+        
             // Referencias
             case "v":
                 PLC.out.println("\t" + var + " = " + a + ";");
+                break;
+            
+            case "etq":
+                PLC.out.println(var + ":");
                 break;
                 
             // Operadores
@@ -56,10 +68,85 @@ action code {:
             case "print":
                 PLC.out.println("\tprint " + var + ";");
                 break;
+            
+            case "if<":
+                PLC.out.println("\tif (" + a + " < " + b + ") goto " + var + ";");
+                break;
+            
+            case "if=":
+                PLC.out.println("\tif (" + a + " == " + b + ") goto " + var + ";");
+                break;
+            
+            case "goto":
+                PLC.out.println("\tgoto " + var + ";");
+                break;
                 
                 
             default:
                 System.err.println("Error al leer '" + id + "'.");
+        }
+    }
+    
+    
+    /* Esta clase interna se encarga de almacenar 3 etiquetas diferentes
+     * de forma que puedan moverse por la gramática a través de RESULT.
+     * 
+     * Las etiquetas representan lo siguiente:
+     * 1. Salto si se cumple la condición (true).
+     * 2. Salto si no se cumple la condición (false).
+     * 3. Salto tras ejecutar la sentencia (salida).
+     */
+    class Condicion {
+        
+        // Variables
+        private String[] etiquetas = {null, null, null};
+        private boolean valor;
+        
+        
+        // Constructores
+        public Condicion() {
+            etiquetas[0] = crearEtiqueta();
+            etiquetas[1] = crearEtiqueta();
+        }
+        
+        public Condicion(String etiqueta1, String etiqueta2) {
+            etiquetas[0] = etiqueta1;
+            etiquetas[1] = etiqueta2;
+        }
+        
+        
+        // Getters
+        public String getEtiqueta1() {
+            return etiquetas[0];
+        }
+        
+        public String getEtiqueta2() {
+            return etiquetas[1];
+        }
+        
+        public String getEtiqueta3() {
+            return etiquetas[2];
+        }
+        
+        public boolean getValor() {
+            return valor;
+        }
+        
+        // Setters
+        public void setEtiqueta1(String etiqueta) {
+            etiquetas[0] = etiqueta;
+        }
+        
+        public void setEtiqueta2(String etiqueta) {
+            etiquetas[1] = etiqueta;
+        }
+        
+        public void setEtiqueta3(String etiqueta) {
+            etiquetas[2] = etiqueta;
+        }
+        
+        public void valor(boolean valor) {
+            this.valor = valor;
         }
     }
 :}
@@ -76,10 +163,11 @@ terminal    String  VAR, NUM;    // Valores numéricos
 
 
 // No-terminales
-non terminal    sents, sent;    // Sentencias
-non terminal    cond;           // Condición
+non terminal    sents, sent;            // Sentencias genéricas
+non terminal    sent_if, sent_else;     // Sentencia de función 'if' ó 'if-else'
 
-non terminal    String  exp;    // Expresión matemática
+non terminal    Condicion   cond;   // Condición
+non terminal    String      exp;    // Expresión matemática
 
 
 // Precedencias
@@ -89,6 +177,7 @@ precedence  left        MUL, DIV;
 precedence  left        EQ, LE, GE;
 precedence  left        NE, LT, GT;
 precedence  left        NO, AND, OR;
+precedence  left        VAR, NUM;
 
 precedence  nonassoc    NEG;
 precedence  nonassoc    AP, CP;
@@ -100,8 +189,7 @@ precedence  nonassoc    AL, CL;
 sents ::= sents sent
         | sent;
 
-sent ::= IF AP cond CP sents
-       | IF AP cond CP sents:a ELSE sents:b
+sent ::= sent_if
        | WHILE AP cond CP sents
        | DO sents WHILE AP cond CP PYC
        | FOR AP exp PYC cond PYC exp CP sents
@@ -109,6 +197,15 @@ sent ::= IF AP cond CP sents
        | AL sents:s CL                          {: RESULT = s; :}
        | exp:e PYC;
 
+// Funciones
+sent_if     ::= IF AP cond:c CP     {:  c.setEtiqueta3(crearEtiqueta());                        escribirFichero("etq", null, null, c.getEtiqueta1()); :}
+                sents               {:  escribirFichero("goto", null, null, c.getEtiqueta3());  escribirFichero("etq", null, null, c.getEtiqueta2()); :}
+                sent_else           {:  escribirFichero("etq", null, null, c.getEtiqueta3());                                                         :};
+
+sent_else   ::= ELSE sent:s         {:  RESULT = s; :}
+              | /* Vacío */ ;
+
+// Expresiones
 exp ::= exp:a SUM exp:b     {: RESULT = crearVariable();    escribirFichero("+", a, b, RESULT);     :}
       | exp:a RES exp:b     {: RESULT = crearVariable();    escribirFichero("-", a, b, RESULT);     :}
       | exp:a MUL exp:b     {: RESULT = crearVariable();    escribirFichero("*", a, b, RESULT);     :}
@@ -120,14 +217,17 @@ exp ::= exp:a SUM exp:b     {: RESULT = crearVariable();    escribirFichero("+",
       | VAR:v               {: RESULT = v;                                                          :}
       | NUM:n               {: RESULT = n;                                                          :};
 
-cond ::= exp:a EQ exp:b
-       | exp:a NE exp:b
-       | exp:a LT exp:b
-       | exp:a LE exp:b
-       | exp:a GT exp:b
-       | exp:a GE exp:b
-       | NO cond
-       | cond:a AND cond:b
-       | exp:a OR exp:b
+// Condiciones
+cond ::= exp:a EQ exp:b     {:  RESULT = new Condicion();   escribirFichero("if=", a, b, RESULT.getEtiqueta1());    escribirFichero("goto", null, null, RESULT.getEtiqueta2());                                                                 :}
+       | exp:a NE exp:b     {:  RESULT = new Condicion();   escribirFichero("if=", a, b, RESULT.getEtiqueta2());    escribirFichero("goto", null, null, RESULT.getEtiqueta1());                                                                 :}
+       | exp:a LT exp:b     {:  RESULT = new Condicion();   escribirFichero("if<", a, b, RESULT.getEtiqueta1());    escribirFichero("goto", null, null, RESULT.getEtiqueta2());                                                                 :}
+       | exp:a LE exp:b     {:  RESULT = new Condicion();   escribirFichero("if<", a, b, RESULT.getEtiqueta1());    escribirFichero("if=", a, b, RESULT.getEtiqueta1());            escribirFichero("goto", null, null, RESULT.getEtiqueta2()); :}
+       | exp:a GT exp:b     {:  RESULT = new Condicion();   escribirFichero("if<", a, b, RESULT.getEtiqueta2());    escribirFichero("if=", a, b, RESULT.getEtiqueta2());            escribirFichero("goto", null, null, RESULT.getEtiqueta1()); :}
+       | exp:a GE exp:b     {:  RESULT = new Condicion();   escribirFichero("if<", a, b, RESULT.getEtiqueta2());    escribirFichero("goto", null, null, RESULT.getEtiqueta1());                                                                 :}
+       | cond:a AND         {:                              escribirFichero("etq", null, null, a.getEtiqueta1());                                                                                                                               :}
+         cond:b             {:                              escribirFichero("etq", null, null, a.getEtiqueta2());   escribirFichero("goto", null, null, b.getEtiqueta2());          RESULT = b;                                                 :}
+       | cond:a OR          {:                              escribirFichero("etq", null, null, a.getEtiqueta2());                                                                                                                               :}
+         cond:b             {:                              escribirFichero("etq", null, null, a.getEtiqueta1());   escribirFichero("goto", null, null, b.getEtiqueta1());          RESULT = b;                                                 :}
+       | NO cond:c          {:  RESULT = new Condicion(c.getEtiqueta2(), c.getEtiqueta1());   :}
        | AP cond CP;
 

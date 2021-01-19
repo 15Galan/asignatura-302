@@ -1,0 +1,18 @@
+	if (2 == 2) goto E0;
+	goto E1;
+E0:
+	if (3 == 3) goto E2;
+	goto E3;
+E1:
+	goto E3;
+E2:
+	if (2 == 3) goto E5;
+	goto E4;
+E3:
+	goto E5;
+E4:
+	$v0 = 2 * 3;
+	print $v0;
+	goto E6;
+E5:
+E6:

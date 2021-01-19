@@ -1,0 +1,7 @@
+	if (1 == 1) goto E0;
+	goto E1;
+E0:
+	print 2;
+	goto E2;
+E1:
+E2:
