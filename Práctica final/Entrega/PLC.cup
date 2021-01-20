@@ -184,10 +184,10 @@ sent    ::= exp PYC
 sent_print  ::= PRINT AP exp:e CP PYC   {:  RESULT = e;     print(e);   :};
 
 sent_if     ::= IF AP cond:c CP         {:  c.setEtqSalida(crearEtiqueta());    etiqueta(c.etqTrue());  :}
-                sents                   {:  salto(c.etqSalida());               etiqueta(c.etqFalse()); :}
+                sent                    {:  salto(c.etqSalida());               etiqueta(c.etqFalse()); :}
                 sent_else               {:  etiqueta(c.etqSalida());                                    :};
 
-sent_else   ::= ELSE sents:s            {:  RESULT = s; :}
+sent_else   ::= ELSE sent:s             {:  RESULT = s; :}
               | /* Vacío */ ;
 
 // Expresiones
