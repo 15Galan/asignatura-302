@@ -1,6 +1,33 @@
 import java_cup.runtime.*;
 
 
+action code {:
+    
+    private boolean lista = false;
+    
+    
+    private void empezar() {
+        lista = true;
+    }
+    
+    private void finalizar() {
+        lista = false;
+    }
+    
+    private void comprobarInicio(String etiqueta) {
+        if(etiqueta.charAt(etiqueta.length()-1) == 's') {
+            empezar();
+        }
+    }
+    
+    private void comprobarFinal(String etiqueta) {
+        if(etiqueta.charAt(etiqueta.length()-1) == 's') {
+            finalizar();   
+        }
+    }
+:}
+
+
 // Terminales
 terminal    String  OPEN_TAG, CLOSE_TAG;
 terminal    String  TEXT;
@@ -12,14 +39,23 @@ non terminal    String  lineas, linea;
 
 
 // Precedencias
-
+precedence right OPEN_TAG, CLOSE_TAG;
 
 // Gramática
-fichero ::= lineas:ls   {:  System.out.println("{\n"+ls+"\n}"); :};
+fichero ::= lineas:ls           {:  System.out.println("{\n" + ls + "\n}"); :};
 
-lineas  ::= lineas:ls   linea:l     {:  RESULT = ls+",\n"+l;    :}
-          | linea:l                 {:  RESULT = l;             :};
-
-linea ::= OPEN_TAG:a    lineas:ls   CLOSE_TAG:c     {:  RESULT = a+": {\n"+ls+"\n}";    :}
-        | OPEN_TAG:a    TEXT:t      CLOSE_TAG:c     {:  RESULT = a+": "+t;              :};
+lineas  ::= lineas:ls linea:l   {:  if (lista) { RESULT = ls+","+l; } else { RESULT = ls+",\n"+l; } :}
+          | linea:l             {:  RESULT = l;                                                     :};
+          
+linea   ::= OPEN_TAG:a          {:  comprobarInicio(a);     RESULT = a.substring(0, a.length()-1);                      :}
+            lineas:ls           {:  if (lista) { RESULT = RESULT+":["+ls+"]";   } else { RESULT = a+": {\n"+ls+"\n}"; } :}
+            CLOSE_TAG:c         {:  comprobarFinal(c);                                                                  :}
+          
+          | OPEN_TAG:a          {:  comprobarInicio(a);                                                 :}
+            TEXT:t              {:  if (lista) { RESULT = t; } else { RESULT = a + ": " + t; }          :}
+            CLOSE_TAG:c         {:  comprobarInicio(c);                                                 :}
+          
+          | OPEN_TAG:a          {:  comprobarInicio(a);     RESULT = a.substring(0, a.length()-1);  :}
+                                {:  if (lista) { RESULT = RESULT+":[]"; } else { RESULT = ""; }     :}
+            CLOSE_TAG:c         {:  comprobarFinal(c);                                              :};
 
