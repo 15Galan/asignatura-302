@@ -87,9 +87,8 @@ action code {:
      */
     class Condicion {
         
-        // Variables
+        // Variable
         private String[] etiquetas = {null, null, null};
-        private boolean valor;
         
         
         // Constructores
@@ -117,9 +116,6 @@ action code {:
             return etiquetas[2];
         }
         
-        public boolean getValor() {
-            return valor;
-        }
         
         // Setters
         public void setEtqTrue(String etiqueta) {
@@ -132,10 +128,6 @@ action code {:
         
         public void setEtqSalida(String etiqueta) {
             etiquetas[2] = etiqueta;
-        }
-        
-        public void valor(boolean valor) {
-            this.valor = valor;
         }
     }
 :}
@@ -189,13 +181,13 @@ sent    ::= exp PYC
           | AL sents:s CL                           {:  RESULT = s; :};
 
 // Funciones
-sent_print  ::= PRINT AP exp:e CP PYC   {: RESULT = e;  print(e);   :};
+sent_print  ::= PRINT AP exp:e CP PYC   {:  RESULT = e;     print(e);   :};
 
 sent_if     ::= IF AP cond:c CP         {:  c.setEtqSalida(crearEtiqueta());    etiqueta(c.etqTrue());  :}
                 sents                   {:  salto(c.etqSalida());               etiqueta(c.etqFalse()); :}
                 sent_else               {:  etiqueta(c.etqSalida());                                    :};
 
-sent_else   ::= ELSE sent:s             {:  RESULT = s; :}
+sent_else   ::= ELSE sents:s            {:  RESULT = s; :}
               | /* Vacío */ ;
 
 // Expresiones
