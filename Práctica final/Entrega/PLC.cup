@@ -148,8 +148,9 @@ non terminal    sents, sent;            // Sentencias genéricas
 non terminal    sent_print;             // Sentencia de función 'print'
 non terminal    sent_if, sent_else;     // Sentencia de función 'if' ó 'if-else'
 
-non terminal    Condicion   cond;   // Condición
-non terminal    String      exp;    // Expresión matemática
+non terminal    Condicion   cond;       // Condición
+non terminal    String      exp;        // Expresión matemática
+non terminal    String      sent_while; // Sentencia de función 'while' ó 'do-while'
 
 
 /* PRECEDENCIAS */
@@ -175,8 +176,7 @@ sents   ::= sents sent
 sent    ::= exp PYC
           | sent_print
           | sent_if
-          | WHILE AP cond CP sents
-          | DO sents WHILE AP cond CP PYC
+          | sent_while
           | FOR AP exp PYC cond PYC exp CP sents
           | AL sents:s CL                           {:  RESULT = s; :};
 
@@ -189,6 +189,12 @@ sent_if     ::= IF AP cond:c CP         {:  c.setEtqSalida(crearEtiqueta());    
 
 sent_else   ::= ELSE sent:s             {:  RESULT = s; :}
               | /* Vacío */ ;
+
+sent_while  ::= WHILE AP cond:c CP      {:  c.setEtqSalida(crearEtiqueta());    etiqueta(c.etqSalida());    etiqueta(c.etqTrue());              :}
+                sent                    {:  salto(c.etqSalida());               etiqueta(c.etqFalse());                                         :}
+              | DO                      {:  RESULT = crearEtiqueta();           etiqueta(RESULT);                                               :}
+                sent
+                WHILE AP cond:c CP PYC  {:  c.setEtqSalida(RESULT);     etiqueta(c.etqTrue());  salto(c.etqSalida());   etiqueta(c.etqFalse()); :};
 
 // Expresiones
 exp     ::= exp:a SUM exp:b     {:  RESULT = crearVariable();   suma(RESULT, a, b);     :}

@@ -1,0 +1,12 @@
+	i = 1;
+E0:
+	$v0 = suma + i;
+	suma = $v0;
+	$v1 = i + 1;
+	i = $v1;
+	if (i < 10) goto E1;
+	goto E2;
+E1:
+	goto E0;
+E2:
+	print suma;
