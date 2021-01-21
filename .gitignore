@@ -4,3 +4,7 @@
 **/out/*
 **\~
 **.class
+**/Yytoken.java
+**/Yylex.java
+**/parser.java
+**/sym.java
