@@ -220,8 +220,8 @@ cond    ::= exp:a EQ exp:b      {:  RESULT = new Condicion();   ifIgual(a, b, RE
           | exp:a NE exp:b      {:  RESULT = new Condicion();   ifIgual(a, b, RESULT.etqFalse());   salto(RESULT.etqTrue());                                        :}
           | exp:a LT exp:b      {:  RESULT = new Condicion();   ifMenor(a, b, RESULT.etqTrue());    salto(RESULT.etqFalse());                                       :}
           | exp:a LE exp:b      {:  RESULT = new Condicion();   ifMenor(a, b, RESULT.etqTrue());    ifIgual(a, b, RESULT.etqTrue());    salto(RESULT.etqFalse());   :}
-          | exp:a GT exp:b      {:  RESULT = new Condicion();   ifMenor(a, b, RESULT.etqFalse());   ifIgual(a, b, RESULT.etqFalse());   salto(RESULT.etqTrue());    :}
-          | exp:a GE exp:b      {:  RESULT = new Condicion();   ifMenor(a, b, RESULT.etqFalse());   salto(RESULT.etqTrue());                                        :}
+          | exp:a GT exp:b      {:  RESULT = new Condicion();   ifMenor(a, b, RESULT.etqFalse());   salto(RESULT.etqTrue());                                        :}
+          | exp:a GE exp:b      {:  RESULT = new Condicion();   ifMenor(a, b, RESULT.etqFalse());   ifIgual(a, b, RESULT.etqFalse());   salto(RESULT.etqTrue());    :}
           | AP cond CP
           | NO cond:c           {:  RESULT = new Condicion(c.etqFalse(), c.etqTrue());              :}
           | cond:a AND          {:  etiqueta(a.etqTrue());                                          :}
