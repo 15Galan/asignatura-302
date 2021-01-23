@@ -1,0 +1,29 @@
+E0:
+E1:
+E2:
+	$v0 = suma + a;
+	$v1 = $v0 + b;
+	$v2 = $v1 + c;
+	suma = $v2;
+	$v3 = c + 1;
+	c = $v3;
+	if (c < 10) goto E3;
+	goto E4;
+E3:
+	goto E2;
+E4:
+	$v4 = b + 1;
+	b = $v4;
+	if (b < 10) goto E5;
+	goto E6;
+E5:
+	goto E1;
+E6:
+	$v5 = a + 1;
+	a = $v5;
+	if (a < 10) goto E7;
+	goto E8;
+E7:
+	goto E0;
+E8:
+	print suma;

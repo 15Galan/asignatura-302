@@ -1,0 +1,9 @@
+x = 6;
+y = 2;
+q = 2;
+p = q;
+$v0 = p + q;
+zeta = $v0;
+$v1 = x / y;
+$v2 = zeta + $v1;
+print $v2;

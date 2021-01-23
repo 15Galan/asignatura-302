@@ -1,0 +1,28 @@
+	i = 1;
+E0:
+	if (i < 10) goto E1;
+	goto E2;
+E3:
+	$v0 = i + 1;
+	i = $v0;
+	goto E0;
+E1:
+	k = 2;
+	j = 1;
+E4:
+	if (j < k) goto E5;
+	goto E6;
+E7:
+	$v1 = j + i;
+	j = $v1;
+	goto E4;
+E5:
+	$v2 = k * i;
+	k = $v2;
+	$v3 = x + i;
+	x = $v3;
+	goto E7;
+E6:
+	goto E3;
+E2:
+	print x;

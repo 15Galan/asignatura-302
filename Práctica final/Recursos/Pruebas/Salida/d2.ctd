@@ -1,0 +1,30 @@
+	a = 3;
+	b = 12;
+	if (1 < a) goto E0;
+	if (1 == a) goto E0;
+	goto E1;
+E0:
+	if (a < 5) goto E2;
+	if (a == 5) goto E2;
+	goto E3;
+E1:
+	goto E3;
+E3:
+	b = a;
+	if (b < 10) goto E5;
+	if (b == 10) goto E5;
+	goto E4;
+E2:
+	goto E4;
+E5:
+	if (b == a) goto E6;
+	goto E7;
+E4:
+	goto E7;
+E7:
+	a = b;
+	$v0 = a * b;
+	print $v0;
+	goto E8;
+E6:
+E8:

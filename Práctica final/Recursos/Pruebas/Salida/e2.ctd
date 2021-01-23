@@ -1,0 +1,18 @@
+	x = 1;
+	if (a == b) goto E1;
+	goto E0;
+E0:
+	if (b == c) goto E3;
+	goto E4;
+E3:
+	$v0 = x + 2;
+	x = $v0;
+	goto E5;
+E4:
+	$v1 = x + 3;
+	x = $v1;
+E5:
+	goto E2;
+E1:
+E2:
+	print x;

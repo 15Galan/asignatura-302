@@ -1,0 +1,9 @@
+	if (1 < 2) goto E0;
+	goto E1;
+E0:
+	a = 1;
+	goto E2;
+E1:
+	a = 2;
+E2:
+	print a;
