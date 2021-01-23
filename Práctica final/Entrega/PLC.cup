@@ -191,9 +191,10 @@ sent_if     ::= IF AP cond:c CP         {:  c.setEtqSalida(crearEtiqueta());    
 sent_else   ::= ELSE sent:s             {:  RESULT = s; :}
               | /* Vacío */ ;
 
-sent_while  ::= WHILE AP cond:c CP      {:  c.setEtqSalida(crearEtiqueta());    etiqueta(c.etqSalida());    etiqueta(c.etqTrue());              :}
-                sent                    {:  salto(c.etqSalida());               etiqueta(c.etqFalse());                                         :}
-              | DO                      {:  RESULT = crearEtiqueta();           etiqueta(RESULT);                                               :}
+sent_while  ::= WHILE                   {:  RESULT = crearEtiqueta();   etiqueta(RESULT);       :}
+                AP cond:c CP            {:  c.setEtqSalida(RESULT);     etiqueta(c.etqTrue());  :}
+                sent                    {:  salto(c.etqSalida());       etiqueta(c.etqFalse()); :}
+              | DO                      {:  RESULT = crearEtiqueta();   etiqueta(RESULT);                                                       :}
                 sent
                 WHILE AP cond:c CP PYC  {:  c.setEtqSalida(RESULT);     etiqueta(c.etqTrue());  salto(c.etqSalida());   etiqueta(c.etqFalse()); :};
 
