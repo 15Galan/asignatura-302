@@ -1,0 +1,3 @@
+int x;
+print (x);
+
