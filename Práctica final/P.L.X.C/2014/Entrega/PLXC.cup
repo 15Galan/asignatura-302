@@ -2,6 +2,7 @@ import java_cup.runtime.*;
 import java.util.ArrayList;
 import java.util.List;
 
+
 /* ACCIONES JAVA */
 action code {:
     
@@ -221,7 +222,7 @@ precedence  nonassoc    AL, CL;
 
 /* GRAMÁTICA */
 // Sentencias
-sents   ::= sents sent      // {:  debug();    :}
+sents   ::= sents sent
           | sent;
 
 sent    ::= exp PYC
@@ -260,12 +261,12 @@ exp     ::= exp:a SUM exp:b     {:  RESULT = crearVariable();   suma(RESULT, a, 
           | exp:a RES exp:b     {:  RESULT = crearVariable();   resta(RESULT, a, b);    :}
           | exp:a MUL exp:b     {:  RESULT = crearVariable();   producto(RESULT, a, b); :}
           | exp:a DIV exp:b     {:  RESULT = crearVariable();   division(RESULT, a, b); :}
-          | AP exp:e CP         {:  RESULT = e;                                         :}
           | RES exp:e           {:  RESULT = crearVariable();   negativo(RESULT, e);    :}
             %prec NEG
+          | AP exp:e CP         {:  RESULT = e; :}
           | asig:a              {:  RESULT = a; :}
-          | VAR:v               {:  RESULT = v;                             :}
-          | NUM:n               {:  RESULT = n;                             :};
+          | VAR:v               {:  RESULT = v; :}
+          | NUM:n               {:  RESULT = n; :};
 
 // Asignaciones
 tipo    ::= INT;
