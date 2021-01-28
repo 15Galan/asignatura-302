@@ -7,6 +7,9 @@ import java_cup.runtime.*;
 
 %%
 
+// Tipos
+"int"       { return new Symbol(sym.INT);   }
+
 // Funciones del lenguaje
 "if"        { return new Symbol(sym.IF);    }
 "else"      { return new Symbol(sym.ELSE);  }
@@ -49,7 +52,8 @@ import java_cup.runtime.*;
 "="         { return new Symbol(sym.IGUAL); }
 
 
-// Fin de sentencia
+// Separadores
+","         { return new Symbol(sym.COMA);  }
 ";"         { return new Symbol(sym.PYC);   }
 
 

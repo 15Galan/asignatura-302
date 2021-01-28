@@ -4,10 +4,7 @@
 	goto E1;
 E0:
 	a = 2;
-	x = 3;
-	$v0 = a + x;
-	print $v0;
 	goto E2;
 E1:
 E2:
-	print x;
+	print a;

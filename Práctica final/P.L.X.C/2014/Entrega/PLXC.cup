@@ -1,10 +1,12 @@
 import java_cup.runtime.*;
-
+import java.util.ArrayList;
+import java.util.List;
 
 /* ACCIONES JAVA */
 action code {:
     
     // Variables globales
+    List<String> historial = new ArrayList<String>();
     private int var = 0;
     private int etq = 0;
     
@@ -22,6 +24,46 @@ action code {:
      */
     private String crearEtiqueta() {
         return "E" + (etq++);
+    }
+    
+    // Comprobadores
+    /**
+     * Añade una variable al historial, pero si esta ya
+     * fue declarada anteriormente entonces indica un error.
+     */
+    public void declarar(String variable) {
+        if (!historial.contains(variable)) {
+            historial.add(variable);
+            
+        } else {
+            error("Variable '" + variable + "' declarada");
+        }
+    }
+    
+    /**
+     * Indica un error solo si la variable no ha sido declarada.
+     */
+    public void comprobar(String variable) {
+        if (!historial.contains(variable)) {
+            error("Variable '" + variable + "' no declarada");
+        }
+    }
+    
+    /**
+     * Elimina una variable del historial, pero si esta no fue
+     * declarada anteriormente entonces indica un error;
+     */
+    public void borrar(String variable) {
+        if(historial.contains(variable)) {
+            historial.remove(historial.indexOf(variable));
+            
+        } else {
+            error("Variable '" + variable + "' no declarada");
+        }
+    }
+    
+    public void debug() {
+        System.out.println(historial);
     }
     
     
@@ -73,6 +115,10 @@ action code {:
     
     public void ifIgual(String a, String b, String etiqueta) {
         PLXC.out.println("\tif (" + a + " == " + b + ") goto " + etiqueta + ";");
+    }
+    
+    public void error(String mensaje) {
+        PLXC.out.println("\terror;\t# " + mensaje);
     }
     // ----------------------------------------------------------------------------------
     
@@ -138,7 +184,8 @@ terminal    IF, ELSE, DO, WHILE, FOR, PRINT;        // Funciones del lenguaje
 terminal    EQ, NE, LT, LE, GT, GE, NO, AND, OR;    // Operadores lógicos
 terminal    SUM, RES, MUL, DIV, NEG, IGUAL;         // Operadores matemáticos
 terminal    AP, CP, AC, CC, AL, CL;                 // Aperturas y cierres
-terminal    PYC;                                    // Fin de línea
+terminal    COMA, PYC;                              // Separadores
+terminal    INT;                                    // Tipos de variable
 
 terminal    String  VAR, NUM;    // Valores numéricos
 
@@ -147,14 +194,17 @@ terminal    String  VAR, NUM;    // Valores numéricos
 non terminal    sents, sent;            // Sentencias genéricas
 non terminal    sent_print;             // Sentencia de función 'print'
 non terminal    sent_if, sent_else;     // Sentencia de función 'if' ó 'if-else'
+non terminal    tipo, decs, dec;        // Declaracion de variables      
 
 non terminal    Condicion   cond;       // Condición
 non terminal    String      exp;        // Expresión matemática
+non terminal    String      asig;       // Asignación de variables
 non terminal    String      sent_while; // Sentencia de función 'while' ó 'do-while'
 non terminal    String      sent_for;   // Sentencia de función 'for'
 
 
 /* PRECEDENCIAS */
+precedence  right       COMA;
 precedence  left        IF, ELSE, DO, WHILE, FOR, PRINT;  
 precedence  left        SUM, RES;
 precedence  left        MUL, DIV;
@@ -171,10 +221,11 @@ precedence  nonassoc    AL, CL;
 
 /* GRAMÁTICA */
 // Sentencias
-sents   ::= sents sent
+sents   ::= sents sent      // {:  debug();    :}
           | sent;
 
 sent    ::= exp PYC
+          | tipo decs PYC
           | sent_print
           | sent_if
           | sent_while
@@ -212,9 +263,21 @@ exp     ::= exp:a SUM exp:b     {:  RESULT = crearVariable();   suma(RESULT, a, 
           | AP exp:e CP         {:  RESULT = e;                                         :}
           | RES exp:e           {:  RESULT = crearVariable();   negativo(RESULT, e);    :}
             %prec NEG
-          | VAR:v IGUAL exp:e   {:  RESULT = v;     variable(RESULT, e);    :}
+          | asig:a              {:  RESULT = a; :}
           | VAR:v               {:  RESULT = v;                             :}
           | NUM:n               {:  RESULT = n;                             :};
+
+// Asignaciones
+tipo    ::= INT;
+
+decs    ::= decs COMA dec
+          | dec;
+
+dec     ::= asig
+          | VAR:v               {:  RESULT = v;     declarar(v);    :};
+
+asig    ::= VAR:v IGUAL exp:e   {:  RESULT = v;     comprobar(v);   variable(v, e); :};
+          
 
 // Condiciones
 cond    ::= exp:a EQ exp:b      {:  RESULT = new Condicion();   ifIgual(a, b, RESULT.etqTrue());    salto(RESULT.etqFalse());   :}
