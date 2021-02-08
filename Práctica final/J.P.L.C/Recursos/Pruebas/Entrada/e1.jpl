@@ -1,0 +1,16 @@
+int main(int x) {
+    int a,b,c ;
+    {
+      a = x + x;
+      {
+         b = a + x;
+         {
+           c = a + b;
+         }
+      }
+    }
+    {
+      x = c;
+    }
+    return x;
+}

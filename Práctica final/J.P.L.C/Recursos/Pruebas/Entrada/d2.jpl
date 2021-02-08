@@ -1,0 +1,9 @@
+int polinomio(int x) {
+    int a=1,b=1+1,c=1+1+1;
+    int p = a*x*x+b*x+c;
+    return p;
+}
+
+int main(int y) {
+    return polinomio(y) + polinomio(y+1);
+}

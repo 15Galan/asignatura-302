@@ -1,0 +1,7 @@
+int polinomio(int x) {
+    return 1*x*x+2*x+3;
+}
+
+int main(int x) {
+    return polinomio(x);
+}

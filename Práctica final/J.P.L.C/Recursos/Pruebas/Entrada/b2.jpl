@@ -1,0 +1,5 @@
+int main(int x) {
+    int alfa,beta,gamma,delta,epsilon;
+    alfa = beta = gamma = delta = epsilon = x;
+    return (alfa+(beta+(gamma+(delta+epsilon)))) + (alfa+(beta+(gamma+(delta+epsilon))));
+}

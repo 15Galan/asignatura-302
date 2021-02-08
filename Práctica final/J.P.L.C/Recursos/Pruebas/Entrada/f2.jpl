@@ -1,0 +1,12 @@
+int main(int x) {
+    int alfa, beta ;
+    alfa = 5; 
+    beta = 10;
+    if ( x<alfa ) 
+    	if (x*x < beta) 
+    	    alfa = 10;
+        else 
+            alfa = 0;
+	return alfa+beta;
+}
+

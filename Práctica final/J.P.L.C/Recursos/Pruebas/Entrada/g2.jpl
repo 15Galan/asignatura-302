@@ -1,0 +1,17 @@
+int main(int x) {
+    int suma;
+    suma = 0;
+    int i=0;
+    while (x>i) {
+        int j=0, k=0;
+		while (x>j) 
+		   while (x>k) {
+		      j = j+1;
+		      k = k+1;
+		      suma = suma + i + j + k;
+		   }   
+		i = i+1;   
+    }
+    return suma ;
+}
+

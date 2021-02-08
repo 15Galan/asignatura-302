@@ -1,0 +1,9 @@
+int main(int n) {
+   int j;
+   j=5;
+   if (j<n) {
+     j = n;
+   }
+   return j;
+}
+

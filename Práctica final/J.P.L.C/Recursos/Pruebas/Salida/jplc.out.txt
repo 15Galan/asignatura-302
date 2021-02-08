@@ -1,0 +1,522 @@
+.method public static main(I)I
+    sipush 0 
+    ireturn 
+    nop
+    .limit stack 1
+    .limit locals 1
+.end method
+
+.method public static main(I)I
+    sipush 1 
+    sipush 2 
+    imul 
+    sipush 3 
+    sipush 4 
+    imul 
+    iadd 
+    ireturn 
+    nop
+    .limit stack 3
+    .limit locals 1
+.end method
+
+.method public static main(I)I
+    sipush 1 
+    sipush 2 
+    sipush -1 
+    imul 
+    sipush 3 
+    imul 
+    isub 
+    sipush 4 
+    sipush 5 
+    imul 
+    iadd 
+    sipush 6 
+    sipush -1 
+    imul 
+    isub 
+    ireturn 
+    nop
+    .limit stack 3
+    .limit locals 1
+.end method
+
+.method public static main(I)I
+    sipush 0 
+    istore 1 
+    sipush 0 
+    istore 2 
+    sipush 0 
+    istore 3 
+    sipush 1 
+    dup 
+    istore 1 
+    pop 
+    sipush 2 
+    dup 
+    istore 2 
+    pop 
+    sipush 3 
+    dup 
+    istore 3 
+    pop 
+    iload 1 
+    iload 0 
+    imul 
+    iload 0 
+    imul 
+    iload 2 
+    iload 0 
+    imul 
+    iadd 
+    iload 3 
+    iadd 
+    ireturn 
+    nop
+    .limit stack 3
+    .limit locals 4
+.end method
+
+.method public static main(I)I
+    sipush 0 
+    istore 1 
+    sipush 0 
+    istore 2 
+    sipush 0 
+    istore 3 
+    sipush 0 
+    istore 4 
+    sipush 0 
+    istore 5 
+    iload 0 
+    dup 
+    istore 5 
+    dup 
+    istore 4 
+    dup 
+    istore 3 
+    dup 
+    istore 2 
+    dup 
+    istore 1 
+    pop 
+    iload 1 
+    iload 2 
+    iload 3 
+    iload 4 
+    iload 5 
+    iadd 
+    iadd 
+    iadd 
+    iadd 
+    iload 1 
+    iload 2 
+    iload 3 
+    iload 4 
+    iload 5 
+    iadd 
+    iadd 
+    iadd 
+    iadd 
+    iadd 
+    ireturn 
+    nop
+    .limit stack 6
+    .limit locals 6
+.end method
+
+.method public static main(I)I
+    sipush 1 
+    istore 1 
+    sipush 2 
+    istore 2 
+    sipush 3 
+    istore 3 
+    iload 1 
+    iload 0 
+    imul 
+    iload 0 
+    imul 
+    iload 2 
+    iload 0 
+    imul 
+    iadd 
+    iload 3 
+    iadd 
+    ireturn 
+    nop
+    .limit stack 3
+    .limit locals 4
+.end method
+
+.method public static main(I)I
+    sipush 1 
+    istore 1 
+    sipush 1 
+    sipush 1 
+    iadd 
+    istore 2 
+    sipush 3 
+    istore 3 
+    sipush 0 
+    istore 4 
+    iload 1 
+    iload 0 
+    imul 
+    iload 0 
+    imul 
+    iload 2 
+    iload 0 
+    imul 
+    iadd 
+    iload 3 
+    iadd 
+    iload 4 
+    iadd 
+    ireturn 
+    nop
+    .limit stack 3
+    .limit locals 5
+.end method
+
+.method public static polinomio(I)I
+    sipush 1 
+    iload 0 
+    imul 
+    iload 0 
+    imul 
+    sipush 2 
+    iload 0 
+    imul 
+    iadd 
+    sipush 3 
+    iadd 
+    ireturn 
+    nop
+    .limit stack 3
+    .limit locals 1
+.end method
+
+.method public static main(I)I
+    iload 0 
+    invokestatic JPL/polinomio(I)I 
+    ireturn 
+    nop
+    .limit stack 1
+    .limit locals 1
+.end method
+
+.method public static polinomio(I)I
+    sipush 1 
+    istore 1 
+    sipush 1 
+    sipush 1 
+    iadd 
+    istore 2 
+    sipush 1 
+    sipush 1 
+    iadd 
+    sipush 1 
+    iadd 
+    istore 3 
+    iload 1 
+    iload 0 
+    imul 
+    iload 0 
+    imul 
+    iload 2 
+    iload 0 
+    imul 
+    iadd 
+    iload 3 
+    iadd 
+    istore 4 
+    iload 4 
+    ireturn 
+    nop
+    .limit stack 3
+    .limit locals 5
+.end method
+
+.method public static main(I)I
+    iload 0 
+    invokestatic JPL/polinomio(I)I 
+    iload 0 
+    sipush 1 
+    iadd 
+    invokestatic JPL/polinomio(I)I 
+    iadd 
+    ireturn 
+    nop
+    .limit stack 3
+    .limit locals 1
+.end method
+
+.method public static main(I)I
+    sipush 0 
+    istore 1 
+    sipush 0 
+    istore 2 
+    sipush 0 
+    istore 3 
+    iload 0 
+    iload 0 
+    iadd 
+    dup 
+    istore 1 
+    pop 
+    iload 1 
+    iload 0 
+    iadd 
+    dup 
+    istore 2 
+    pop 
+    iload 1 
+    iload 2 
+    iadd 
+    dup 
+    istore 3 
+    pop 
+    iload 3 
+    dup 
+    istore 0 
+    pop 
+    iload 0 
+    ireturn 
+    nop
+    .limit stack 2
+    .limit locals 4
+.end method
+
+.method public static main(I)I
+    sipush 0 
+    istore 1 
+    iload 0 
+    dup 
+    istore 1 
+    pop 
+    sipush 0 
+    istore 2 
+    iload 1 
+    iload 1 
+    iadd 
+    dup 
+    istore 2 
+    pop 
+    sipush 0 
+    istore 3 
+    iload 2 
+    iload 2 
+    iadd 
+    dup 
+    istore 3 
+    pop 
+    sipush 0 
+    istore 4 
+    iload 3 
+    iload 3 
+    iadd 
+    dup 
+    istore 4 
+    pop 
+    iload 4 
+    dup 
+    istore 1 
+    pop 
+    iload 1 
+    iload 2 
+    iadd 
+    iload 3 
+    iadd 
+    dup 
+    istore 1 
+    pop 
+    iload 1 
+    ireturn 
+    nop
+    .limit stack 2
+    .limit locals 5
+.end method
+
+.method public static main(I)I
+    sipush 0 
+    istore 1 
+    sipush 5 
+    dup 
+    istore 1 
+    pop 
+    iload 1 
+    iload 0 
+    isub 
+    iflt L0 
+    goto L1 
+L0:
+    iload 0 
+    dup 
+    istore 1 
+    pop 
+    goto L2 
+L1:
+L2:
+    iload 1 
+    ireturn 
+    nop
+    .limit stack 2
+    .limit locals 2
+.end method
+
+.method public static main(I)I
+    sipush 0 
+    istore 1 
+    sipush 0 
+    istore 2 
+    sipush 5 
+    dup 
+    istore 1 
+    pop 
+    sipush 10 
+    dup 
+    istore 2 
+    pop 
+    iload 0 
+    iload 1 
+    isub 
+    iflt L0 
+    goto L1 
+L0:
+    iload 0 
+    iload 0 
+    imul 
+    iload 2 
+    isub 
+    iflt L3 
+    goto L4 
+L3:
+    sipush 10 
+    dup 
+    istore 1 
+    pop 
+    goto L5 
+L4:
+    sipush 0 
+    dup 
+    istore 1 
+    pop 
+L5:
+    goto L2 
+L1:
+L2:
+    iload 1 
+    iload 2 
+    iadd 
+    ireturn 
+    nop
+    .limit stack 2
+    .limit locals 3
+.end method
+
+.method public static main(I)I
+    sipush 0 
+    istore 1 
+    sipush 0 
+    dup 
+    istore 1 
+    pop 
+L0:
+    iload 1 
+    iload 0 
+    isub 
+    iflt L1 
+    goto L2 
+L1:
+    iload 1 
+    sipush 1 
+    iadd 
+    dup 
+    istore 1 
+    pop 
+    goto L0 
+L2:
+    iload 1 
+    ireturn 
+    nop
+    .limit stack 2
+    .limit locals 2
+.end method
+
+.method public static main(I)I
+    sipush 0 
+    istore 1 
+    sipush 0 
+    dup 
+    istore 1 
+    pop 
+    sipush 0 
+    istore 2 
+L0:
+    iload 0 
+    iload 2 
+    isub 
+    ifgt L1 
+    goto L2 
+L1:
+    sipush 0 
+    istore 3 
+    sipush 0 
+    istore 4 
+L3:
+    iload 0 
+    iload 3 
+    isub 
+    ifgt L4 
+    goto L5 
+L4:
+L6:
+    iload 0 
+    iload 4 
+    isub 
+    ifgt L7 
+    goto L8 
+L7:
+    iload 3 
+    sipush 1 
+    iadd 
+    dup 
+    istore 3 
+    pop 
+    iload 4 
+    sipush 1 
+    iadd 
+    dup 
+    istore 4 
+    pop 
+    iload 1 
+    iload 2 
+    iadd 
+    iload 3 
+    iadd 
+    iload 4 
+    iadd 
+    dup 
+    istore 1 
+    pop 
+    goto L6 
+L8:
+    goto L3 
+L5:
+    iload 2 
+    sipush 1 
+    iadd 
+    dup 
+    istore 2 
+    pop 
+    goto L0 
+L2:
+    iload 1 
+    ireturn 
+    nop
+    .limit stack 2
+    .limit locals 5
+.end method
+

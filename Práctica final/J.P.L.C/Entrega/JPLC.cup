@@ -1,0 +1,111 @@
+import java_cup.runtime.*;
+
+
+/* TERMINALES */
+terminal    INT;                                // Tipos
+terminal    AP, CP, AL, CL;                     // Aperturas y cierres
+terminal    MAIN, RETURN;                       // Java
+terminal    SUM, RES, MUL, DIV, NEG, IGUAL;     // Operadores matemáticos
+terminal    LT, GT, LE, GE, EQ, NEQ;            // Operadores lógicos
+terminal    COMA, PYC;                          // Separadores
+
+terminal    String  IF, ELSE, WHILE;    // Funciones del lenguaje
+terminal    Integer NUMERO;             // Valor numérico (entero)
+terminal    Double  NUMEROF;            // Valor numérico (flotante)
+terminal    String  VAR;                // Valor numérico (almacenado)
+
+
+/* NO-TERMINALES */
+non terminal    sents, sent;    // Sentencias genéricas
+non terminal    decs, dec;      // Declaraciones de variables
+non terminal    funcion;
+non terminal    invokeFunc;
+non terminal    params;
+non terminal    nombreF;
+non terminal    elsePart;
+
+non terminal    Integer     tipo;   // Tipo de una variable
+non terminal    String      asig;   // Asignación
+non terminal    String      exp;    // Ecpresión matemática
+non terminal    String      vari;   // Variable (?)
+non terminal    Etiqueta    cond;   // Condición
+
+
+
+/* PRECEDENCIAS */
+precedence  left    COMA;
+precedence  right   IGUAL;
+precedence  left    SUM, RES;
+precedence  left    MUL, DIV;
+precedence  left    NEG;
+precedence  left    ELSE;
+
+
+/* GRAMÁTICA */
+// Sentencias
+sents   ::= sent
+          | sents sent;
+
+sent    ::= exp:e PYC               {:  Generador.pop();                                                                            :}
+          | decs PYC
+          | funcion AL sents CL     {:  Generador.endMethod();  TSimb.clear();                                                      :}
+          | IF:tagIf
+            AP cond:c CP
+            sent                    {:  Generador.goTo(tagIf);  Generador.label(c.getF());                                          :}
+            elsePart                {:  Generador.label(tagIf);                                                                     :}
+          | WHILE:tagW              {:  Generador.label(tagW);                                                                      :}
+            AP cond:c CP
+            sent                    {:  Generador.goTo(tagW);   Generador.label(c.getF());                                          :}
+          | RETURN exp:e1 PYC       {:  Generador.ireturn();    Generador.nop();    Generador.limitStack(); Generador.limitLocal(); :}
+          | AL sents CL;
+
+// Else
+elsePart    ::= ELSE sent
+              | /* Epsilon */ ;
+
+
+// Llamada de una función
+invokeFunc  ::= VAR:i AP exp:e CP   {:  Generador.invoke(i);    :};
+
+
+// Tratamiento de variables
+tipo    ::= INT                     {:  RESULT = new Integer(1);    :};
+
+decs    ::= tipo dec
+          | decs COMA dec;
+              
+dec     ::= vari:i                  {:  Generador.sipush("0");  TSimb.add(i, "0", 1);   Generador.istore(Integer.toString(TSimb.getVarTam()-1));    :}
+          | vari:i IGUAL exp:e1     {:                          TSimb.add(i, e1, 1);    Generador.istore(Integer.toString(TSimb.getVarTam()-1));    :};
+
+asig    ::= VAR:i IGUAL exp:e1      {:  Generador.dup();                                Generador.istore(TSimb.indexOf(i)); :};
+
+vari    ::= VAR:i                   {:  RESULT = i; :};
+
+
+// Expresiones
+exp     ::= exp:e1 SUM exp:e2   {:  RESULT = Generador.iadd();                  :}
+          | exp:e1 RES exp:e2   {:  Generador.isub();                           :}
+          | exp:e1 MUL exp:e2   {:  RESULT = Generador.imul();                  :}
+          | exp:e1 DIV exp:e2   {:  Generador.idiv();                           :}
+          | RES exp:e1          {:  Generador.sipush("-1"); Generador.imul();   :}
+            %prec NEG
+          | asig
+          | invokeFunc
+          | AP exp:e1 CP
+          | vari:i              {:  Generador.iload(TSimb.indexOf(i));          :}
+          | NUMERO:n            {:  Generador.sipush(n.toString());             :};
+
+// Función
+funcion ::= tipo:t nombreF AP params CP;
+
+nombreF ::= MAIN                        {:  Generador.funcion("main");  :}
+          | VAR:i                       {:  Generador.funcion(i);       :};
+
+params  ::= tipo:t VAR:i                {:  TSimb.add(i, "0", t);   :}        
+          | params COMA tipo:t VAR:i    {:  TSimb.add(i, "0", t);   :};
+
+
+// Condiciones
+cond    ::= exp:e1 LT exp:e2    {:  Generador.isub();   Etiqueta etiqueta = Generador.ifle();   Generador.goTo(etiqueta.getF());    Generador.label(etiqueta.getV());   RESULT = etiqueta;  :}
+          | exp:e1 GT exp:e2    {:  Generador.isub();   Etiqueta etiqueta = Generador.ifge();   Generador.goTo(etiqueta.getF());    Generador.label(etiqueta.getV());   RESULT = etiqueta;  :};
+

@@ -1,0 +1,18 @@
+int main(int x) {
+    int a; 
+    a = x;
+    {
+      int b;
+      b  = a+a;
+      int c;
+      c = b+b;
+      {
+          int d; 
+          d = c+c; 
+          a = d; 
+      }
+      a = a+b+c; 
+    }
+    return a ;
+}
+
