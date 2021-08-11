@@ -10,6 +10,23 @@ La asignatura que todo el mundo teme y dicen que es muy jodida, pero que a mí m
 </p>
 
 
+
+## Mis Calificaciones
+
+Usando el material del repositorio.    
+
+| Examen (Febrero)      | Puntuación | Peso |
+| --------------------- | ---------- | ---- |
+| Parcial: Tema 2       |        6.0 | 20 % |
+| Parcial: Tema 3       |        9.0 | 20 % |
+| Parcial: Tema 4       |        5.0 | 20 % |
+| Final: Expansión PLXC |        5.5 | 40 % |
+
+**Nota Final:** 6.0.
+
+Si tu profesor es Conejo, tu nota acabará redondeada como la mía.
+
+
 ---
 
 
